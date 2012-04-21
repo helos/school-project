@@ -88,3 +88,18 @@ void loadRule(string line) {
 
 
 }
+
+
+
+void removeLeftRecursion() {
+	for(int i=0; i<nonterminals.size(); i++) {
+		for(int j=0; j< nonterminals[i]->rules.size() ; i++) {
+			NonTerminal* ai = nonterminals[i];
+			NonTerminal* aj = nonterminals[j+1];
+
+			if(ai == aj){
+
+			}
+		}
+	}
+}
