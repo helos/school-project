@@ -8,22 +8,31 @@ using namespace std;
 
 class GrammerObject {
 public:
-	bool isTerminal();
+	virtual bool isTerminal();
+};
+
+class Rule {
+public:
+	Rule(vector<GrammerObject>);
+	vector<GrammerObject> rule;
 };
 
 class Terminal : public GrammerObject {
 public:
+	Terminal(string);
 	string terminal;
+
+	virtual bool isTerminal();
 };
 
 class Production : public GrammerObject {
 public:
-	vector<Rules> rules;
-};
+	Production();
+	vector<Rule> rules;
 
-class Rules {
-public:
-	vector<GrammerObject> rule;
-}
+	void addRule(Rule);
+
+	virtual bool isTerminal();
+};
 
 #endif
