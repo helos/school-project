@@ -25,9 +25,9 @@ public:
 	virtual bool isTerminal();
 };
 
-class Production : public GrammerObject {
+class NonTerminal : public GrammerObject {
 public:
-	Production();
+	NonTerminal();
 	vector<Rule> rules;
 
 	void addRule(Rule);
