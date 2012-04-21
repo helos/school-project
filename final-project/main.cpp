@@ -1,5 +1,8 @@
 #include <iostream>
 
+#include "grammer.h"
+#include "scanner.h"
+
 using namespace std;
 
 int main() {

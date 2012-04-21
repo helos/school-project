@@ -26,11 +26,12 @@ Rule::Rule(vector<GrammerObject> thisRule) {
 }
 
 Terminal::Terminal(string terminal) {
-	this->terminal = terminal;
+	this->identifier = terminal;
 }
 
-NonTerminal::NonTerminal() {
+NonTerminal::NonTerminal(string identifier) {
 	rules = vector<Rule>();
+	this->identifier = identifier;
 }
 
 

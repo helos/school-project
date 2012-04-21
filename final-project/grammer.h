@@ -9,6 +9,7 @@ using namespace std;
 class GrammerObject {
 public:
 	virtual bool isTerminal();
+	string identifier;
 };
 
 class Rule {
@@ -20,14 +21,13 @@ public:
 class Terminal : public GrammerObject {
 public:
 	Terminal(string);
-	string terminal;
 
 	virtual bool isTerminal();
 };
 
 class NonTerminal : public GrammerObject {
 public:
-	NonTerminal();
+	NonTerminal(string);
 	vector<Rule> rules;
 
 	void addRule(Rule);
