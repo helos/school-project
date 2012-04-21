@@ -1,5 +1,6 @@
 #include <string>
 #include <vector>
+#include <deque>
 
 using namespace std;
 
@@ -14,8 +15,8 @@ public:
 
 class Rule {
 public:
-	Rule(vector<GrammerObject>);
-	vector<GrammerObject> rule;
+	Rule(deque<GrammerObject>);
+	deque<GrammerObject> token;
 };
 
 class Terminal : public GrammerObject {

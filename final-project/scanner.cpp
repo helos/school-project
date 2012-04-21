@@ -93,13 +93,27 @@ void loadRule(string line) {
 
 void removeLeftRecursion() {
 	for(int i=0; i<nonterminals.size(); i++) {
-		for(int j=0; j< nonterminals[i]->rules.size() ; i++) {
-			NonTerminal* ai = nonterminals[i];
-			NonTerminal* aj = nonterminals[j+1];
-
-			if(ai == aj){
-
+		NonTerminal* ai = nonterminals[i];
+		for(int j=0; j<i ; i++) {
+			NonTerminal* aj = nonterminals[j];
+			
+			for(int k=0; k< ai->rules.size() ; k++) {
+				Rule rule = ai->rules[k];
+				if(rule.token[0] == aj) {
+					//TODO see page 160
+					ai->rules.erase(k);
+					k--;
+				}
 			}
+		}
+		removeImmediateLeft(ai);
+	}
+}
+
+void removeImmediateLeft(NonTerminal* a) {
+	for(int i=0; i<a->rules.size(); i++) {
+		if(a == a->rules[i].token[0]) {
+			
 		}
 	}
 }

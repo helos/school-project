@@ -21,8 +21,8 @@ bool NonTerminal::isTerminal() {
  * Constructors
  **********************/
 
-Rule::Rule(vector<GrammerObject> thisRule) {
-	rule = thisRule;
+Rule::Rule(deque<GrammerObject> thisRule) {
+	token = thisRule;
 }
 
 Terminal::Terminal(string terminal) {
