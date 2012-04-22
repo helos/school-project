@@ -89,8 +89,6 @@ void loadRule(string line) {
 
 }
 
-
-
 void removeLeftRecursion() {
 	for(int i=0; i<nonterminals.size(); i++) {
 		NonTerminal* ai = nonterminals[i];
