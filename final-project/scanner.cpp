@@ -116,10 +116,25 @@ void removeLeftRecursion() {
 }
 
 void removeImmediateLeft(NonTerminal* a) {
+	NonTerminal* aPrime = new NonTerminal(a->identifier + " ' ");
+
 	for(int i = 0; i < a->rules.size(); i++) {
-		GrammerObject *first = a->rules[i]->token[0];
+		GrammerObject* first = a->rules[i]->token[0];
 		if(a == first) {
-			
+			Rule* rulePrime = a->rules[i];
+			rulePrime->token.pop_front();
+			aPrime->addRule(rulePrime);
+			nonterminals.push_back(aPrime);
+			rulePrime->token.push_back(aPrime);
+
+			aPrime->addRule(new Rule(deque<GrammerObject*>(0)));
+
+			a->rules.erase(a->rules.begin() + i);
+			i--;
 		}
+	}
+
+	for(vector<Rule*>::iterator i = a->rules.begin(); i != a->rules.end(); i++) {
+		(*i)->token.push_back(aPrime);
 	}
 }
