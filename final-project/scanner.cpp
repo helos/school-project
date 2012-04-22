@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <assert.h>
+#include <iterator>
 
 #include "scanner.h"
 
@@ -97,15 +98,41 @@ void loadRule(string line) {
 }
 
 void removeLeftRecursion() {
+	//For each non terminal
 	for(int i=0; i<nonterminals.size(); i++) {
 		NonTerminal* ai = nonterminals[i];
+
+		//for each non terminal processed before this one
 		for(int j=0; j<i ; i++) {
 			NonTerminal* aj = nonterminals[j];
 			
+			//check to see if any rules start with this earlier nonterminal
 			for(int k = 0; k < ai->rules.size(); k++) {
 				Rule rule = *ai->rules[k];
+
+				//if found must replace with all rules of aj
 				if(rule.token[0] == aj) {
-					//TODO see page 160
+					//remove aj from from of rule list see page 160
+					rule.token.pop_front();
+
+					//for all rules of aj
+					for(int l=0; l<aj->rules.size(); l++) {
+						deque<GrammerObject*> ajrule = aj->rules[l]->token;
+						//create new rule starting with the ai rule and 
+						//ending with aj's lth rule
+						deque<GrammerObject*> newRule;
+
+						//push the aj rule then the ai rule without aj
+						for(deque<GrammerObject*>::iterator iter = ajrule.begin(); iter != ajrule.end(); iter++)
+							newRule.push_back(*iter);
+						for(deque<GrammerObject*>::iterator iter = rule.token.begin(); iter != rule.token.end(); iter++)
+							newRule.push_back(*iter);
+
+						//Add new rule
+						ai->addRule(new Rule(newRule));
+					}
+
+					//remove this adjusted rule and adjust k
 					ai->rules.erase(ai->rules.begin()+k);
 					k--;
 				}
