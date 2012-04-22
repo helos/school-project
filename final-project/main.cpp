@@ -3,6 +3,8 @@
 #include "grammer.h"
 #include "scanner.h"
 
+//Testing merging and stuff
+
 using namespace std;
 
 int main() {
