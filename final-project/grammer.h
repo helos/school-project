@@ -36,6 +36,7 @@ public:
 	virtual bool isTerminal();
 };
 
+void removeLeftRecursion();
+
 #endif
 
-void removeLeftRecursion();
