@@ -5,6 +5,10 @@
 
 //Testing merging and stuff
 
+/**********
+Comments*
+***********/
+
 using namespace std;
 
 int main() {
