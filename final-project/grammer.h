@@ -15,8 +15,8 @@ public:
 
 class Rule {
 public:
-	Rule(deque<GrammerObject>);
-	deque<GrammerObject> token;
+	Rule(deque<GrammerObject*>);
+	deque<GrammerObject*> token;
 };
 
 class Terminal : public GrammerObject {
@@ -29,9 +29,9 @@ public:
 class NonTerminal : public GrammerObject {
 public:
 	NonTerminal(string);
-	vector<Rule> rules;
+	vector<Rule*> rules;
 
-	void addRule(Rule);
+	void addRule(Rule*);
 
 	virtual bool isTerminal();
 };

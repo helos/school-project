@@ -10,6 +10,9 @@ vector<Terminal*> terminals;
 vector<NonTerminal*> nonterminals;
 NonTerminal *start = NULL;
 
+/* Reads in the Grammer and stores it in terminals
+ * and nonterminals with the start nonterminal 
+ * in start */
 void readGrammer() {
 
 	string line;
@@ -41,6 +44,7 @@ void readGrammer() {
 	}
 }
 
+/* Read terminals from a line and create them */
 void loadTerminals(string line) {
 	size_t loc = line.find(' ');
 	size_t next = line.find(' ',loc);
@@ -52,6 +56,7 @@ void loadTerminals(string line) {
 	}
 }
 
+/* Read nonterminals from a line and create them */
 void loadNonTerminals(string line) {
 	size_t loc = line.find(' ');
 	size_t next = line.find(' ',loc);
@@ -63,6 +68,7 @@ void loadNonTerminals(string line) {
 	}
 }
 
+/* finds a created terminal */
 Terminal* findTerminal(string identifier) {
 	int len = terminals.size();
 	for( int i=0; i<len; i++) {
@@ -73,6 +79,7 @@ Terminal* findTerminal(string identifier) {
 	return NULL;
 }
 
+/* finds a created nonterminal */
 NonTerminal* findNonTerminal(string identifier) {
 	int len = nonterminals.size();
 	for( int i=0; i<len; i++) {
@@ -96,10 +103,10 @@ void removeLeftRecursion() {
 			NonTerminal* aj = nonterminals[j];
 			
 			for(int k=0; k< ai->rules.size() ; k++) {
-				Rule rule = ai->rules[k];
+				Rule rule = *ai->rules[k];
 				if(rule.token[0] == aj) {
 					//TODO see page 160
-					ai->rules.erase(k);
+					ai->rules.erase(ai->rules.begin()+k);
 					k--;
 				}
 			}
@@ -110,7 +117,8 @@ void removeLeftRecursion() {
 
 void removeImmediateLeft(NonTerminal* a) {
 	for(int i=0; i<a->rules.size(); i++) {
-		if(a == a->rules[i].token[0]) {
+		GrammerObject *first = a->rules[i]->token[0];
+		if(a == first) {
 			
 		}
 	}
