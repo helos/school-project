@@ -3,6 +3,13 @@
 #include "grammer.h"
 #include "scanner.h"
 
+<<<<<<< HEAD
+=======
+/**********
+Comments*
+***********/
+
+>>>>>>> f8e29ffbea205d013cf8130d09a6f5b2d5fa8ec0
 using namespace std;
 
 int main() {
