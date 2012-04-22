@@ -4,6 +4,11 @@
 #include "scanner.h"
 
 //Testing merging and stuff
+//testing it again --- michael
+
+/**********
+Comments*
+***********/
 
 using namespace std;
 
