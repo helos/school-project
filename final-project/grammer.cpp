@@ -21,7 +21,7 @@ bool NonTerminal::isTerminal() {
  * Constructors
  **********************/
 
-Rule::Rule(deque<GrammerObject> thisRule) {
+Rule::Rule(deque<GrammerObject*> thisRule) {
 	token = thisRule;
 }
 
@@ -30,12 +30,12 @@ Terminal::Terminal(string terminal) {
 }
 
 NonTerminal::NonTerminal(string identifier) {
-	rules = vector<Rule>();
+	rules = vector<Rule*>();
 	this->identifier = identifier;
 }
 
 
 /* Add rule to list of rules */
-void NonTerminal::addRule(Rule newRule) {
+void NonTerminal::addRule(Rule *newRule) {
 	rules.push_back(newRule);
 }
