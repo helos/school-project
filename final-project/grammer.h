@@ -36,6 +36,14 @@ public:
 	virtual bool isTerminal();
 };
 
+class Grammer {
+public:
+	Grammer(vector<Terminal*>, vector<NonTerminal*>);
+
+	vector<Terminal*> terminals;
+	vector<NonTerminal*> nonterminals;
+};
+
 void removeLeftRecursion();
 
 #endif
