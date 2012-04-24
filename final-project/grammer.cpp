@@ -87,7 +87,9 @@ void NonTerminal::calculateFirst(){
 	//solve the possible nonTerminals and add the terminals from them
 	set<NonTerminal*>::iterator it;
 	for(it = first.nonTerminals.begin(); it != first.nonTerminals.end(); it++ ){
-		(*it)->calculateFirst();
+		
+		if(*it != this) //make sure that it is not calling it's self
+			(*it)->calculateFirst();
 
 		set<Terminal*>::iterator it2;
 		for(it2 = (*it)->first.terminals.begin(); it2 != (*it)->first.terminals.end(); it2++){
