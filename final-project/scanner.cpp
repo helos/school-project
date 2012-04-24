@@ -11,6 +11,8 @@ vector<Terminal*> terminals;
 vector<NonTerminal*> nonterminals;
 NonTerminal *start = NULL;
 
+Rule *empty = new Rule(deque<GrammerObject*>());
+
 void readGrammer() {
 	//TODO
 }
@@ -51,24 +53,24 @@ void readGrammer(istream in) {
 
 /* Read terminals from a line and create them */
 void loadTerminals(string line) {
-	size_t loc = line.find(' ');
+	size_t loc = line.find(' ') +1;
 	size_t next = line.find(' ',loc);
 	
 	while(loc < line.size()) {
 		terminals.push_back(new Terminal(line.substr(loc, next-loc)));
-		loc = next;
+		loc = next +1;
 		next = line.find(' ', loc);
 	}
 }
 
 /* Read nonterminals from a line and create them */
 void loadNonTerminals(string line) {
-	size_t loc = line.find(' ');
+	size_t loc = line.find(' ') +1;
 	size_t next = line.find(' ',loc);
 	
 	while(loc < line.size()) {
 		nonterminals.push_back(new NonTerminal(line.substr(loc, next-loc)));
-		loc = next;
+		loc = next +1;
 		next = line.find(' ', loc);
 	}
 }
@@ -115,6 +117,7 @@ void loadRule(string line) {
 		//will store the rule
 		deque<GrammerObject*> *ruleList = new deque<GrammerObject*>(0);
 
+		//get first token
 		size_t tokenStart = 0;
 		size_t tokenEnd = rule.find(' ');
 		string token = rule.substr(0, tokenEnd);
@@ -122,29 +125,35 @@ void loadRule(string line) {
 		//for all tokens
 		while(token.size() > 0) {
 			
+			//Get the object corresponding to the token
 			GrammerObject *next = NULL;
 			if(token[0] == '<') { //is a NonTerminal
 				next = findNonTerminal(token);
-			} else {
+			} else { //Should be a Terminal otherwise
 				next = findTerminal(token);
 			}
 
-			if(next != NULL) {
-				ruleList->push_back(next);
-			} else {
+			//Sanity Check, next should be a terminal or nonterminal
+			if(next == NULL) {
 				cout << "ERROR: " << token << " not found in rule " << rule << "\n";
 			}
 
+			//Add GrammerObject to end of rule
+			ruleList->push_back(next);
+
+			//Get the next token
 			tokenStart = tokenEnd +1;
 			tokenEnd = rule.find(' ', tokenStart);
 			token = rule.substr(tokenStart, tokenEnd - tokenStart);
 		}
 
+		//Add constructed rule to nonterminal
 		nonterminal->addRule(new Rule(*ruleList));
 
+		//get the next rule
 		start = end + 2;
 		end = line.find('|',start);
-		rule = line.substr(start, end-start);
+		rule = line.substr(start, end-start -1); //do not include trailing space
 	}
 }
 

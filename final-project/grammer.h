@@ -34,7 +34,31 @@ public:
 	void addRule(Rule*);
 
 	virtual bool isTerminal();
+	
+	bool hasEmptySet;
+
+	struct FIRST{ // Declare FIRST struct p. 169 / 177
+		bool changed;
+		bool computed;
+		bool hasEmptySet;
+		vector<int> unSolved;
+		vector<Terminal*> terminals;
+		vector<NonTerminal*> nonTerminals;
+	} first;
+
+	void calculateFirst();
+
 };
+
+class Grammer {
+public:
+	Grammer(vector<Terminal*>, vector<NonTerminal*>);
+
+	vector<Terminal*> terminals;
+	vector<NonTerminal*> nonterminals;
+};
+
+Rule *empty;
 
 void removeLeftRecursion();
 
