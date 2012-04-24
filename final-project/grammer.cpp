@@ -37,6 +37,11 @@ NonTerminal::NonTerminal(string identifier) {
 	first.computed = false;
 }
 
+Grammer::Grammer(vector<Terminal*> terminals, vector<NonTerminal*> nonterminals) {
+	this->terminals = terminals;
+	this->nonterminals = nonterminals;
+}
+
 
 /* Add rule to list of rules */
 void NonTerminal::addRule(Rule *newRule) {

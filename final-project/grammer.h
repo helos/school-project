@@ -50,6 +50,16 @@ public:
 
 };
 
+class Grammer {
+public:
+	Grammer(vector<Terminal*>, vector<NonTerminal*>);
+
+	vector<Terminal*> terminals;
+	vector<NonTerminal*> nonterminals;
+};
+
+Rule *empty;
+
 void removeLeftRecursion();
 
 #endif
