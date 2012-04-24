@@ -38,7 +38,7 @@ public:
 
 void removeLeftRecursion();
 
-class First {   // Declare FIRST(x) class
+class First {   // Declare FIRST(x) class p. 169 / 177
 public:
 	bool changed;
 	vector<Rule*> rules;
