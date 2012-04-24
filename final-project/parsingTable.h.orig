@@ -1,0 +1,21 @@
+#include <string>
+#include <vector>
+#include <deque>
+<<<<<<< HEAD
+#include "grammer.cpp"
+=======
+#include "grammer.h"
+>>>>>>> 6c47b49fea161e2de4ec473a1ce32d64741208cf
+
+using namespace std;
+
+#ifndef __PARSING__
+#define __PARSING__
+
+<<<<<<< HEAD
+
+
+
+=======
+>>>>>>> 6c47b49fea161e2de4ec473a1ce32d64741208cf
+#endif

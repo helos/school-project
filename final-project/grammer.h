@@ -1,6 +1,7 @@
 #include <string>
 #include <vector>
 #include <deque>
+#include <set>
 
 using namespace std;
 
@@ -41,9 +42,9 @@ public:
 		bool changed;
 		bool computed;
 		bool hasEmptySet;
-		vector<int> unSolved;
-		vector<Terminal*> terminals;
-		vector<NonTerminal*> nonTerminals;
+		set<int> unSolved;
+		set<Terminal*> terminals;
+		set<NonTerminal*> nonTerminals;
 	} first;
 
 	void calculateFirst();

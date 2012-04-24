@@ -46,27 +46,44 @@ Grammer::Grammer(vector<Terminal*> terminals, vector<NonTerminal*> nonterminals)
 /* Add rule to list of rules */
 void NonTerminal::addRule(Rule *newRule) {
 	rules.push_back(newRule);
+	if(newRule == empty) hasEmptySet = true;
 	first.computed = false; // flag first set as unsolved
 }
 
 void NonTerminal::calculateFirst(){
 
+	//check to see if it is solved
+	if(first.computed == true) return;
+
 	//do the initial passover
 	for( int i = 0; i < rules.size(); i++){
 		if(rules[i]->token[0]){
-		
+			first.hasEmptySet = true;
 		}else if (rules[i]->token[0]->isTerminal()){
 			//add terminals to the first list
-			first.terminals.push_back((Terminal*)(rules[i]->token[0]));
+			first.terminals.insert((Terminal*)(rules[i]->token[0]));
 		}else{
 			//keep track of unsolved line numbers
-			first.unSolved.push_back(i);
+			first.unSolved.insert(i);
 		}
 	}
 
-	//
+	//check to see if it is already solved
 	if(first.unSolved.size() == 0){
 		first.computed = true;
 		return;
+	}
+
+	for(int i = 0; i < first.unSolved.size(); i++){
+		for(int j = 0; j < rules[i]->token.size(); j++){
+			first.nonTerminals.insert(rules[i]->token[j]);
+			if(((NonTerminal*)rules[i]->token[j])->hasEmptySet){
+				
+			}else{j = rules[i]->token.size();}
+		}
+	}
+
+	for(int i =0; i< first.unSolved.size(); i++){
+		
 	}
 }
