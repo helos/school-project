@@ -38,5 +38,13 @@ public:
 
 void removeLeftRecursion();
 
+class First {   // Declare FIRST(x) class
+public:
+	bool changed;
+	vector<Rule*> rules;
+	bool add(Rule*);
+	
+}; 
+
 #endif
 
