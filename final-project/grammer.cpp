@@ -74,6 +74,7 @@ void NonTerminal::calculateFirst(){
 		return;
 	}
 
+	//add all possible nonTerminals
 	for(int i = 0; i < first.unSolved.size(); i++){
 		for(int j = 0; j < rules[i]->token.size(); j++){
 			first.nonTerminals.insert(rules[i]->token[j]);
@@ -83,7 +84,14 @@ void NonTerminal::calculateFirst(){
 		}
 	}
 
-	for(int i =0; i< first.unSolved.size(); i++){
-		
+	//solve the possible nonTerminals and add the terminals from them
+	set<NonTerminal*>::iterator it;
+	for(it = first.nonTerminals.begin(); it != first.nonTerminals.end(); it++ ){
+		(*it)->calculateFirst();
+
+		set<Terminal*>::iterator it2;
+		for(it2 = (*it)->first.terminals.begin(); it2 != (*it)->first.terminals.end(); it2++){
+			first.terminals.insert(*it2);
+		}
 	}
 }
