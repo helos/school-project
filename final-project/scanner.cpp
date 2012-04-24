@@ -219,11 +219,72 @@ void removeImmediateLeft(NonTerminal* a) {
 }
 
 void removeLeftFactoring(NonTerminal* a){
+
+	//Temporary holder for all rules with same values
+	deque<Rule*> listRules;
+
+	//Value for all tokens that are the same
+	deque<GrammerObject*> alpha;
+
+	//For all rules
 	for(int i = 0; i < a->rules.size(); i++){
+		//Clear the rules to test for the next iteration
+		listRules.clear();
+
+		//Clear the value of alpha for the next iteration
+		alpha.clear();
+
+		listRules.push_back(a->rules[i]);
+
+		//Gather all rules with the same start as rule i
 		for(int j = i+1; a->rules.size(); j++){
+			
+			//Test to see if begining of rule j matches rule i
 			if(a->rules[i]->token[0] == a->rules[j]->token[0]){
-				
+
+				//remember j
+				listRules.push_back(a->rules[j]);
+
+				//remove j and decrement because of vacancy
+				a->rules.erase(a->rules.begin()+j);
+				j--;
 			}
 		}
+
+		//only stay in iteration if rules matched rule i
+		if(listRules.size() <= 1) continue;
+
+		//gather 
+		while(true) {
+			bool same = true;
+			GrammerObject* compareTo = listRules[0]->token[0];
+
+			//same is true iff all tokens = compareTo
+			for(int l = 0; listRules.size(); l++){
+				same = same && listRules[l]->token.size() > 0 &&compareTo == listRules[l]->token[0];
+			}
+
+			//If not all tokens were the same break
+			if(!same) break;
+
+			//add first token to alpha
+			alpha.push_back(listRules[0]->token[0]);
+
+			//erase first token from rules
+			for(int l = 0; listRules.size(); l++){
+				listRules[l]->token.pop_front();
+			}
+		}
+
+		//Create new nonterminal and add these rules to it
+		NonTerminal *newNT = new NonTerminal(a->identifier+"'");
+		for(int l = 0; listRules.size(); l++){
+			newNT->addRule(listRules[l]);
+		}
+
+		nonterminals.push_back(newNT);
+
+		alpha.push_back(newNT);
+		a->addRule(new Rule(alpha));
 	}
 }
