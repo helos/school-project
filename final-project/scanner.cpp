@@ -215,4 +215,15 @@ void removeImmediateLeft(NonTerminal* a) {
 	for(vector<Rule*>::iterator i = a->rules.begin(); i != a->rules.end(); i++) {
 		(*i)->token.push_back(aPrime);
 	}
+	
+}
+
+void removeLeftFactoring(NonTerminal* a){
+	for(int i = 0; i < a->rules.size(); i++){
+		for(int j = i+1; a->rules.size(); j++){
+			if(a->rules[i]->token[0] == a->rules[j]->token[0]){
+				
+			}
+		}
+	}
 }
