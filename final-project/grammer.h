@@ -44,6 +44,8 @@ public:
 	vector<NonTerminal*> nonterminals;
 };
 
+Rule *empty;
+
 void removeLeftRecursion();
 
 #endif
