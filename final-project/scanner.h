@@ -1,11 +1,15 @@
 #include "grammer.h"
 
 void readGrammer();
+void readGrammer(istream);
 void loadTerminals(string);
 void loadNonTerminals(string);
 
 Terminal* findTerminal(string);
 NonTerminal* findNonTerminal(string);
+
+void removeLeftRecursion();
+void removeImmediateLeft(NonTerminal* a);
 
 void loadRule(string);
 

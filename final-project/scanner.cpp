@@ -1,7 +1,7 @@
-#include <iostream>
 #include <string>
 #include <assert.h>
 #include <iterator>
+#include <iostream>
 
 #include "scanner.h"
 
@@ -11,37 +11,41 @@ vector<Terminal*> terminals;
 vector<NonTerminal*> nonterminals;
 NonTerminal *start = NULL;
 
+void readGrammer() {
+	//TODO
+}
+
 /* Reads in the Grammer and stores it in terminals
  * and nonterminals with the start nonterminal 
  * in start */
-void readGrammer() {
+void readGrammer(istream in) {
 
 	string line;
 
 	//load terminals from line
-	getline(cin,line);
+	getline(in,line);
 	loadTerminals(line);
 
 	//load nonterminals from line
-	getline(cin,line);
+	getline(in,line);
 	loadNonTerminals(line);
 
 	//get start symbol
-	getline(cin,line);
+	getline(in,line);
 	size_t space = line.find(' ');
 	start = findNonTerminal(line.substr(space));
 
 	assert(start != NULL);
 
-	getline(cin,line);//%rules
+	getline(in,line);//%rules
 
-	getline(cin,line);
+	getline(in,line);
 	while( line.size() > 0) {
 
 		//load rule
 		loadRule(line);
 
-		getline(cin,line);
+		getline(in,line);
 	}
 }
 
@@ -91,10 +95,57 @@ NonTerminal* findNonTerminal(string identifier) {
 	return NULL;
 }
 
+//Reads list of rules for a non terminal
 void loadRule(string line) {
 
+	string name = line.substr(0, line.find(' '));
+	NonTerminal *nonterminal = findNonTerminal(name);
 
+	if(nonterminal == NULL) {
+		cout << "No NonTerminal of name " << name;
+	}
 
+	//Get start and end of first rule
+	size_t start = line.find_first_not_of(' ',line.find(' ',line.find(' ')));
+	size_t end = line.find_first_of('|');
+
+	string rule = line.substr(start, end-start);
+	while(rule.size() > 0) {
+
+		//will store the rule
+		deque<GrammerObject*> *ruleList = new deque<GrammerObject*>(0);
+
+		size_t tokenStart = 0;
+		size_t tokenEnd = rule.find(' ');
+		string token = rule.substr(0, tokenEnd);
+
+		//for all tokens
+		while(token.size() > 0) {
+			
+			GrammerObject *next = NULL;
+			if(token[0] == '<') { //is a NonTerminal
+				next = findNonTerminal(token);
+			} else {
+				next = findTerminal(token);
+			}
+
+			if(next != NULL) {
+				ruleList->push_back(next);
+			} else {
+				cout << "ERROR: " << token << " not found in rule " << rule << "\n";
+			}
+
+			tokenStart = tokenEnd +1;
+			tokenEnd = rule.find(' ', tokenStart);
+			token = rule.substr(tokenStart, tokenEnd - tokenStart);
+		}
+
+		nonterminal->addRule(new Rule(*ruleList));
+
+		start = end + 2;
+		end = line.find('|',start);
+		rule = line.substr(start, end-start);
+	}
 }
 
 void removeLeftRecursion() {
