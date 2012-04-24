@@ -34,17 +34,23 @@ public:
 	void addRule(Rule*);
 
 	virtual bool isTerminal();
+	
+	bool hasEmptySet;
+
+	struct FIRST{ // Declare FIRST struct p. 169 / 177
+		bool changed;
+		bool computed;
+		bool hasEmptySet;
+		vector<int> unSolved;
+		vector<Terminal*> terminals;
+		vector<NonTerminal*> nonTerminals;
+	} first;
+
+	void calculateFirst();
+
 };
 
 void removeLeftRecursion();
-
-class First {   // Declare FIRST(x) class p. 169 / 177
-public:
-	bool changed;
-	vector<Rule*> rules;
-	bool add(Rule*);
-	
-}; 
 
 #endif
 
