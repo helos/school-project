@@ -42,6 +42,38 @@ Grammer::Grammer(vector<Terminal*> terminals, vector<NonTerminal*> nonterminals)
 	this->nonterminals = nonterminals;
 }
 
+/**********************
+ * Print Statements
+ **********************/
+
+const string Rule::toString(){
+	string out = "[ ";
+	for(int i = 0; i < token.size(); i++){
+		if(i>0) out += ", ";
+		out += token[i]->toString();
+	}
+	out += " ]";
+	if(token.size() == 0) out = "[ (EMPTY) ]";
+	return out;
+}
+
+const string NonTerminal::toString(){
+	string out = "{ ";
+	for(int i = 0; i < rules.size(); i++){
+		if(i>0) out += " | ";
+		out += rules[i]->toString();
+	}
+	out += " }";
+	if(rules.size() == 0) out = "{ (EMPTY) }";
+	return out;
+}
+
+
+
+/**********************
+ * Methods
+ **********************/
+
 
 /* Add rule to list of rules */
 void NonTerminal::addRule(Rule *newRule) {
@@ -52,6 +84,11 @@ void NonTerminal::addRule(Rule *newRule) {
 	}
 	first.computed = false; // flag first set as unsolved
 }
+
+
+/**********************
+ * Calculate First
+ **********************/
 
 void NonTerminal::calculateFirst(){
 

@@ -8,16 +8,19 @@ using namespace std;
 #ifndef __GRAMMER__
 #define __GRAMMER__
 
+
 class GrammerObject {
 public:
 	virtual bool isTerminal();
 	string identifier;
+	virtual const string toString();
 };
 
 class Rule {
 public:
 	Rule(deque<GrammerObject*>);
 	deque<GrammerObject*> token;
+	virtual const string toString();
 };
 
 class Terminal : public GrammerObject {
@@ -25,6 +28,8 @@ public:
 	Terminal(string);
 
 	virtual bool isTerminal();
+	virtual const string toString();
+
 };
 
 class NonTerminal : public GrammerObject {
@@ -36,6 +41,8 @@ public:
 
 	virtual bool isTerminal();
 	
+	virtual const string toString();
+
 	bool hasEmptySet;
 
 	struct FIRST{ // Declare FIRST struct p. 169 / 177
@@ -62,6 +69,37 @@ public:
 extern Rule *empty;
 
 void removeLeftRecursion();
+
+
+template <typename CharT, typename Traits>
+basic_ostream<CharT, Traits>& operator<<(
+	basic_ostream<CharT, Traits>& out, const GrammerObject& r)
+	{  
+		return out<< r.toString();
+	}
+
+
+template <typename CharT, typename Traits>
+basic_ostream<CharT, Traits>& operator<<(
+	basic_ostream<CharT, Traits>& out, const Rule& r)
+	{  
+		return out<< r.toString();
+	}
+
+
+template <typename CharT, typename Traits>
+basic_ostream<CharT, Traits>& operator<<(
+	basic_ostream<CharT, Traits>& out, const Terminal& r)
+	{  
+		return out<< r.toString();
+	}
+
+template <typename CharT, typename Traits>
+basic_ostream<CharT, Traits>& operator<<(
+	basic_ostream<CharT, Traits>& out, const NonTerminal& r)
+	{  
+		return out<< r.toString();
+	}
 
 #endif
 
