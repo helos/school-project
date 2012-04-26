@@ -14,7 +14,9 @@ int main(int argc, char* argv[]) {
 	
 	readGrammer(&grammerFile);
 
-	printf("hello world");
+	removeLeftRecursion();
+
+	printf("Finished");
 	getchar();
 	return 0;
 }
