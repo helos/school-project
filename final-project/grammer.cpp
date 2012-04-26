@@ -47,7 +47,7 @@ Grammer::Grammer(vector<Terminal*> terminals, vector<NonTerminal*> nonterminals)
  * Print Statements
  **********************/
 string GrammerObject::toString(){
-	return "I am a grammerobject, silly";
+	return "I am the GrammerObject: " + identifier;
 }
 
 string Rule::toString(){
@@ -62,18 +62,18 @@ string Rule::toString(){
 }
 
 string NonTerminal::toString(){
-	string out = "{ ";
+	string out = identifier + " => { ";
 	for(int i = 0; i < rules.size(); i++){
 		if(i>0) out += " | ";
 		out += rules[i]->toString();
 	}
+	if(rules.size() == 0) out += "(EMPTY)";
 	out += " }";
-	if(rules.size() == 0) out = "{ (EMPTY) }";
 	return out;
 }
 
 string Terminal::toString(){
-	return "terminal";
+	return identifier;
 }
 
 
