@@ -24,6 +24,7 @@ void readGrammer(istream *in) {
 	getline(*in,line);
 	loadTerminals(line);
 
+
 	//load nonterminals from line
 	getline(*in,line);
 	loadNonTerminals(line);
