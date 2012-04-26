@@ -1,8 +1,4 @@
-#include <iostream>
-#include <fstream>
-
-#include "grammer.h"
-#include "scanner.h"
+#include "main.h"
 
 using namespace std;
 
@@ -12,6 +8,19 @@ int main(int argc, char* argv[]) {
 	
 	readGrammer(&grammerFile);
 
+	printTheGrammer();
+
+	removeLeftRecursion();
+
+	printTheGrammer();
+
+	printf("Finished");
+	getchar();
+	return 0;
+}
+
+
+void printTheGrammer(){
 	cout << "Terminals: "; 
 	for(int i = 0; i < terminals.size(); i++){
 		if(i%5==0) cout << endl << "\t";
@@ -23,10 +32,6 @@ int main(int argc, char* argv[]) {
 	for(int i = 0; i < nonterminals.size(); i++)
 		for(int j=0; j<nonterminals[i]->rules.size(); j++)
 			cout<< nonterminals[i]->toString(j) << endl;
-
-
-	removeLeftRecursion();
-
 	cout << "Terminals: "; 
 	for(int i = 0; i < terminals.size(); i++){
 		if(i%5==0) cout << endl << "\t";
@@ -40,7 +45,4 @@ int main(int argc, char* argv[]) {
 			cout<< nonterminals[i]->toString(j) << endl;
 		
 
-	printf("Finished");
-	getchar();
-	return 0;
 }
