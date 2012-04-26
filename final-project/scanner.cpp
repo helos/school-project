@@ -168,12 +168,14 @@ void removeLeftRecursion() {
 		NonTerminal* ai = nonterminals[i];
 
 		//for each non terminal processed before this one
-		for(int j=0; j<i ; i++) {
+		for(int j=0; j<i ; j++) {
 			NonTerminal* aj = nonterminals[j];
 			
 			//check to see if any rules start with this earlier nonterminal
 			for(int k = 0; k < ai->rules.size(); k++) {
 				Rule rule = *ai->rules[k];
+
+				if(rule.token.size() <= 0) break;
 
 				//if found must replace with all rules of aj
 				if(rule.token[0] == aj) {
