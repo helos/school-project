@@ -49,6 +49,10 @@ string GrammerObject::toString(){
 	return identifier;
 }
 
+string GrammerObject::toString(int i){
+	return toString();
+}
+
 string Rule::toString(){
 	string out = "[ ";
 	for(int i = 0; i < token.size(); i++){
@@ -67,6 +71,13 @@ string NonTerminal::toString(){
 		out += rules[i]->toString();
 	}
 	if(rules.size() == 0) out += "(EMPTY)";
+	out += " }";
+	return out;
+}
+
+string NonTerminal::toString(int i){
+	string out = identifier + " => { ";
+	out += rules[i]->toString();
 	out += " }";
 	return out;
 }
