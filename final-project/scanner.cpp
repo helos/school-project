@@ -57,6 +57,7 @@ void loadTerminals(string line) {
 		loc = next +1;
 		next = line.find(' ', loc);
 	}
+	terminals.push_back(new Terminal(line.substr(loc, next-loc)));
 }
 
 /* Read nonterminals from a line and create them */
@@ -69,6 +70,7 @@ void loadNonTerminals(string line) {
 		loc = next +1;
 		next = line.find(' ', loc);
 	}
+	nonterminals.push_back(new NonTerminal(line.substr(loc, next-loc)));
 }
 
 /* finds a created terminal */
@@ -99,12 +101,10 @@ void loadRule(string line) {
 	string name = line.substr(0, line.find(' '));
 	NonTerminal *nonterminal = findNonTerminal(name);
 
-	if(nonterminal == NULL) {
-		cout << "No NonTerminal of name " << name;
-	}
+	assert(nonterminal != NULL);
 
 	//Get start and end of first rule
-	size_t start = line.find_first_not_of(' ',line.find(' ',line.find(' ')));
+	size_t start = line.find_first_not_of(' ',line.find(' ',line.find(' ')+1)+1);
 	size_t end = line.find_first_of('|');
 
 	string rule = line.substr(start, end-start);
@@ -130,12 +130,12 @@ void loadRule(string line) {
 			}
 
 			//Sanity Check, next should be a terminal or nonterminal
-			if(next == NULL) {
-				cout << "ERROR: " << token << " not found in rule " << rule << "\n";
-			}
+			assert(next != NULL);
 
 			//Add GrammerObject to end of rule
 			ruleList->push_back(next);
+
+			if(tokenEnd +1 == 0) break;
 
 			//Get the next token
 			tokenStart = tokenEnd +1;
@@ -145,6 +145,8 @@ void loadRule(string line) {
 
 		//Add constructed rule to nonterminal
 		nonterminal->addRule(new Rule(*ruleList));
+
+		if(end +1 == 0) break;
 
 		//get the next rule
 		start = end + 2;
