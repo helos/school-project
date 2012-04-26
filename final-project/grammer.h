@@ -59,7 +59,7 @@ public:
 	vector<NonTerminal*> nonterminals;
 };
 
-Rule *empty;
+extern Rule *empty;
 
 void removeLeftRecursion();
 

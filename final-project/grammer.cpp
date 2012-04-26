@@ -57,7 +57,7 @@ void NonTerminal::calculateFirst(){
 
 	//do the initial passover
 	for( int i = 0; i < rules.size(); i++){
-		if(rules[i]->token[0]){
+		if(rules[i]->token.size() == 0){
 			first.hasEmptySet = true;
 		}else if (rules[i]->token[0]->isTerminal()){
 			//add terminals to the first list
@@ -77,7 +77,7 @@ void NonTerminal::calculateFirst(){
 	//add all possible nonTerminals
 	for(int i = 0; i < first.unSolved.size(); i++){
 		for(int j = 0; j < rules[i]->token.size(); j++){
-			first.nonTerminals.insert(rules[i]->token[j]);
+			first.nonTerminals.insert((NonTerminal*)rules[i]->token[j]);
 			if(((NonTerminal*)rules[i]->token[j])->hasEmptySet){
 				
 			}else{j = rules[i]->token.size();}

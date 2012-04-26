@@ -11,7 +11,7 @@ vector<Terminal*> terminals;
 vector<NonTerminal*> nonterminals;
 NonTerminal *start = NULL;
 
-Rule *empty = new Rule(deque<GrammerObject*>());
+extern Rule *empty = new Rule(deque<GrammerObject*>());
 
 void readGrammer() {
 	//TODO
