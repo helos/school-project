@@ -270,6 +270,9 @@ void removeLeftFactoring(NonTerminal* a){
 
 	//For all rules
 	for(int i = 0; i < a->rules.size(); i++){
+
+		if(a->rules[i] == empty) continue;
+
 		//Clear the rules to test for the next iteration
 		listRules.clear();
 
@@ -279,7 +282,9 @@ void removeLeftFactoring(NonTerminal* a){
 		listRules.push_back(a->rules[i]);
 
 		//Gather all rules with the same start as rule i
-		for(int j = i+1; a->rules.size(); j++){
+		for(int j = i+1; j < a->rules.size(); j++){
+
+			if(a->rules[j] == empty) continue;
 			
 			//Test to see if begining of rule j matches rule i
 			if(a->rules[i]->token[0] == a->rules[j]->token[0]){
