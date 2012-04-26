@@ -252,6 +252,14 @@ void removeImmediateLeft(NonTerminal* a) {
 	
 }
 
+void removeLeftFactoring(NonTerminal*);
+
+void removeLeftFactoring() {
+	vector<NonTerminal*>::iterator i = nonterminals.begin();
+	for(; i != nonterminals.end(); i++)
+		removeLeftFactoring(*i);
+}
+
 void removeLeftFactoring(NonTerminal* a){
 
 	//Temporary holder for all rules with same values

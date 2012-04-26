@@ -14,6 +14,10 @@ int main(int argc, char* argv[]) {
 
 	printTheGrammer();
 
+	removeLeftFactoring();
+
+	printTheGrammer();
+
 	printf("Finished");
 	getchar();
 	return 0;

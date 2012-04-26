@@ -72,6 +72,7 @@ public:
 extern Rule *empty;
 
 void removeLeftRecursion();
+void removeLeftFactoring();
 
 #endif
 
