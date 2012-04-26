@@ -210,26 +210,44 @@ void removeLeftRecursion() {
 }
 
 void removeImmediateLeft(NonTerminal* a) {
-	NonTerminal* aPrime = new NonTerminal(a->identifier + " ' ");
+	NonTerminal* aPrime = new NonTerminal(a->identifier + "'");
+
+	bool dirty = false;
 
 	for(int i = 0; i < a->rules.size(); i++) {
+
+		//sanity check, don't operate on empty rule
+		if(a->rules[i]->token.size() <= 0) break;
+
+		//Check rule for left recursion
 		GrammerObject* first = a->rules[i]->token[0];
 		if(a == first) {
+
+			//Mark that this occured for later
+			dirty = true;
+
+			//take the violating rule and remove the recursion
 			Rule* rulePrime = a->rules[i];
 			rulePrime->token.pop_front();
-			aPrime->addRule(rulePrime);
-			nonterminals.push_back(aPrime);
-			rulePrime->token.push_back(aPrime);
 
-			aPrime->addRule(new Rule(deque<GrammerObject*>(0)));
+			//add the rule to nonterminal prime and end with loop back
+			aPrime->addRule(rulePrime);
+			rulePrime->token.push_back(aPrime);
 
 			a->rules.erase(a->rules.begin() + i);
 			i--;
 		}
 	}
 
-	for(vector<Rule*>::iterator i = a->rules.begin(); i != a->rules.end(); i++) {
-		(*i)->token.push_back(aPrime);
+	if(dirty) {
+		nonterminals.push_back(aPrime);
+
+		//nt prime must have empty rule
+		aPrime->addRule(empty);
+
+		//For all remaining rules add nt prime to the end
+		for(vector<Rule*>::iterator i = a->rules.begin(); i != a->rules.end(); i++)
+			(*i)->token.push_back(aPrime);
 	}
 	
 }
