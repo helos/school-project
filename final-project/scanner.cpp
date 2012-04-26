@@ -44,6 +44,8 @@ void readGrammer(istream *in) {
 		//load rule
 		loadRule(line);
 
+		if(in->eof()) break;
+
 		getline(*in,line);
 	}
 }
