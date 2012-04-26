@@ -86,6 +86,16 @@ string Terminal::toString(){
 	return identifier;
 }
 
+string NonTerminal::printFirst(){
+	string out = "First( " + identifier + " ) = { ";
+	set<NonTerminal*>::iterator it;
+	for(it = first.nonTerminals.begin(); it != first.nonTerminals.end(); it++ ){
+		if(it != first.nonTerminals.begin()) out += ", ";
+		out += (*it)->identifier;
+	}
+	return out + " }";
+}
+
 
 
 

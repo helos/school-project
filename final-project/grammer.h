@@ -55,8 +55,9 @@ public:
 		set<Terminal*> terminals;
 		set<NonTerminal*> nonTerminals;
 	} first;
-
+	
 	void calculateFirst();
+	string printFirst();
 
 };
 
