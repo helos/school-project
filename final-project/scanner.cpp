@@ -13,41 +13,37 @@ NonTerminal *start = NULL;
 
 extern Rule *empty = new Rule(deque<GrammerObject*>());
 
-void readGrammer() {
-	//TODO
-}
-
 /* Reads in the Grammer and stores it in terminals
  * and nonterminals with the start nonterminal 
  * in start */
-void readGrammer(istream in) {
+void readGrammer(istream *in) {
 
 	string line;
 
 	//load terminals from line
-	getline(in,line);
+	getline(*in,line);
 	loadTerminals(line);
 
 	//load nonterminals from line
-	getline(in,line);
+	getline(*in,line);
 	loadNonTerminals(line);
 
 	//get start symbol
-	getline(in,line);
+	getline(*in,line);
 	size_t space = line.find(' ');
 	start = findNonTerminal(line.substr(space));
 
 	assert(start != NULL);
 
-	getline(in,line);//%rules
+	getline(*in,line);//%rules
 
-	getline(in,line);
+	getline(*in,line);
 	while( line.size() > 0) {
 
 		//load rule
 		loadRule(line);
 
-		getline(in,line);
+		getline(*in,line);
 	}
 }
 
@@ -56,7 +52,7 @@ void loadTerminals(string line) {
 	size_t loc = line.find(' ') +1;
 	size_t next = line.find(' ',loc);
 	
-	while(loc < line.size()) {
+	while(next < line.size()) {
 		terminals.push_back(new Terminal(line.substr(loc, next-loc)));
 		loc = next +1;
 		next = line.find(' ', loc);
@@ -68,7 +64,7 @@ void loadNonTerminals(string line) {
 	size_t loc = line.find(' ') +1;
 	size_t next = line.find(' ',loc);
 	
-	while(loc < line.size()) {
+	while(next < line.size()) {
 		nonterminals.push_back(new NonTerminal(line.substr(loc, next-loc)));
 		loc = next +1;
 		next = line.find(' ', loc);

@@ -1,7 +1,7 @@
 #include "grammer.h"
 
 void readGrammer();
-void readGrammer(istream);
+void readGrammer(istream*);
 void loadTerminals(string);
 void loadNonTerminals(string);
 
