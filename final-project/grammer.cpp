@@ -56,7 +56,7 @@ string GrammerObject::toString(int i){
 string Rule::toString(){
 	string out = "[ ";
 	for(int i = 0; i < token.size(); i++){
-		if(i>0) out += ", ";
+		if(i>0) out += " ";
 		out += token[i]->identifier;
 	}
 	out += " ]";
