@@ -46,7 +46,10 @@ Grammer::Grammer(vector<Terminal*> terminals, vector<NonTerminal*> nonterminals)
 /* Add rule to list of rules */
 void NonTerminal::addRule(Rule *newRule) {
 	rules.push_back(newRule);
-	if(newRule == empty) hasEmptySet = true;
+	if(newRule == empty) {
+		hasEmptySet = true;
+		first.hasEmptySet = true;
+	}
 	first.computed = false; // flag first set as unsolved
 }
 
@@ -96,4 +99,18 @@ void NonTerminal::calculateFirst(){
 			first.terminals.insert(*it2);
 		}
 	}
+
+
+	//double check if it has an empty set
+	for(int i = 0; i < first.unSolved.size(); i++){
+		for(int j = 0; j < rules[i]->token.size(); j++){
+			if(((NonTerminal*)rules[i]->token[j])->first.hasEmptySet){
+				
+			}else{j = rules[i]->token.size();}
+			first.hasEmptySet = true;
+		}
+	}
+
+	first.computed = true;
+	first.changed = false;
 }
