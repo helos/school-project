@@ -17,7 +17,8 @@ int main(int argc, char* argv[]) {
 	printTheGrammer();
 
 	removeLeftFactoring();
-
+	
+	cout << endl << "Removed Left Factoring" << endl;
 	printTheGrammer();
 
 	printf("Finished");
