@@ -30,7 +30,7 @@ void readGrammer(istream *in) {
 
 	//get start symbol
 	getline(*in,line);
-	size_t space = line.find(' '+1);
+	size_t space = line.find(' ')+1;
 	start = findNonTerminal(line.substr(space));
 
 	assert(start != NULL);
