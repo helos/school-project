@@ -17,11 +17,12 @@ int main(int argc, char* argv[]) {
 		if(i%5==0) cout << endl << "\t";
 		cout<< terminals[i]->toString() << "\t";
 	}
-	cout << endl;
+	cout << endl << endl;
 
 	cout << "NonTerminals: " << endl; 
 	for(int i = 0; i < nonterminals.size(); i++)
-		cout<< nonterminals[i]->toString() << endl;
+		for(int j=0; j<nonterminals[i]->rules.size(); j++)
+			cout<< nonterminals[i]->toString(j) << endl;
 
 
 	removeLeftRecursion();

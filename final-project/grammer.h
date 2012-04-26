@@ -14,6 +14,7 @@ public:
 	virtual bool isTerminal();
 	string identifier;
 	virtual string toString();
+	virtual string toString(int);
 };
 
 class Rule {
@@ -42,6 +43,7 @@ public:
 	virtual bool isTerminal();
 	
 	virtual string toString();
+	virtual string toString(int);
 
 	bool hasEmptySet;
 
