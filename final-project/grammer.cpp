@@ -1,4 +1,5 @@
 #include "grammer.h"
+#include <string>
 
 
 /*********************************
@@ -45,7 +46,10 @@ Grammer::Grammer(vector<Terminal*> terminals, vector<NonTerminal*> nonterminals)
 /**********************
  * Print Statements
  **********************/
-/*
+string GrammerObject::toString(){
+	return "I am a grammerobject, silly";
+}
+
 string Rule::toString(){
 	string out = "[ ";
 	for(int i = 0; i < token.size(); i++){
@@ -67,7 +71,12 @@ string NonTerminal::toString(){
 	if(rules.size() == 0) out = "{ (EMPTY) }";
 	return out;
 }
-*/
+
+string Terminal::toString(){
+	return "terminal";
+}
+
+
 
 
 /**********************
