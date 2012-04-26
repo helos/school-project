@@ -81,6 +81,8 @@ Terminal* findTerminal(string identifier) {
 			return terminals[i];
 	}
 
+	cout << "Could not find " << identifier << endl;
+
 	return NULL;
 }
 
@@ -91,6 +93,8 @@ NonTerminal* findNonTerminal(string identifier) {
 		if(nonterminals[i]->identifier.compare(identifier) == 0)
 			return nonterminals[i];
 	}
+
+	cout << "Could not find " << identifier << endl;
 
 	return NULL;
 }
