@@ -52,7 +52,7 @@ void loadTerminals(string line) {
 	size_t loc = line.find(' ') +1;
 	size_t next = line.find(' ',loc);
 	
-	while(loc < line.size()) {
+	while(next < line.size()) {
 		terminals.push_back(new Terminal(line.substr(loc, next-loc)));
 		loc = next +1;
 		next = line.find(' ', loc);
@@ -64,7 +64,7 @@ void loadNonTerminals(string line) {
 	size_t loc = line.find(' ') +1;
 	size_t next = line.find(' ',loc);
 	
-	while(loc < line.size()) {
+	while(next < line.size()) {
 		nonterminals.push_back(new NonTerminal(line.substr(loc, next-loc)));
 		loc = next +1;
 		next = line.find(' ', loc);
