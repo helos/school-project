@@ -13,14 +13,14 @@ class GrammerObject {
 public:
 	virtual bool isTerminal();
 	string identifier;
-	virtual const string toString();
+	//virtual string toString();
 };
 
 class Rule {
 public:
 	Rule(deque<GrammerObject*>);
 	deque<GrammerObject*> token;
-	virtual const string toString();
+	//string toString();
 };
 
 class Terminal : public GrammerObject {
@@ -28,7 +28,7 @@ public:
 	Terminal(string);
 
 	virtual bool isTerminal();
-	virtual const string toString();
+	//virtual string toString();
 
 };
 
@@ -41,7 +41,7 @@ public:
 
 	virtual bool isTerminal();
 	
-	virtual const string toString();
+	//string toString();
 
 	bool hasEmptySet;
 
@@ -70,15 +70,15 @@ extern Rule *empty;
 
 void removeLeftRecursion();
 
-
+/*
 template <typename CharT, typename Traits>
 basic_ostream<CharT, Traits>& operator<<(
 	basic_ostream<CharT, Traits>& out, const GrammerObject& r)
 	{  
 		return out<< r.toString();
 	}
-
-
+*/
+/*
 template <typename CharT, typename Traits>
 basic_ostream<CharT, Traits>& operator<<(
 	basic_ostream<CharT, Traits>& out, const Rule& r)
@@ -86,20 +86,25 @@ basic_ostream<CharT, Traits>& operator<<(
 		return out<< r.toString();
 	}
 
-
+/*
 template <typename CharT, typename Traits>
 basic_ostream<CharT, Traits>& operator<<(
 	basic_ostream<CharT, Traits>& out, const Terminal& r)
 	{  
 		return out<< r.toString();
 	}
-
+*/
+/*
 template <typename CharT, typename Traits>
 basic_ostream<CharT, Traits>& operator<<(
 	basic_ostream<CharT, Traits>& out, const NonTerminal& r)
 	{  
 		return out<< r.toString();
 	}
+*/
+
+//ostream& operator<<(ostream& out, const Rule r);
+//ostream& operator<<(ostream& out, const NonTerminal r);
 
 #endif
 

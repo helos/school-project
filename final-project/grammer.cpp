@@ -45,8 +45,8 @@ Grammer::Grammer(vector<Terminal*> terminals, vector<NonTerminal*> nonterminals)
 /**********************
  * Print Statements
  **********************/
-
-const string Rule::toString(){
+/*
+string Rule::toString(){
 	string out = "[ ";
 	for(int i = 0; i < token.size(); i++){
 		if(i>0) out += ", ";
@@ -57,7 +57,7 @@ const string Rule::toString(){
 	return out;
 }
 
-const string NonTerminal::toString(){
+string NonTerminal::toString(){
 	string out = "{ ";
 	for(int i = 0; i < rules.size(); i++){
 		if(i>0) out += " | ";
@@ -67,7 +67,7 @@ const string NonTerminal::toString(){
 	if(rules.size() == 0) out = "{ (EMPTY) }";
 	return out;
 }
-
+*/
 
 
 /**********************
