@@ -70,38 +70,5 @@ extern Rule *empty;
 
 void removeLeftRecursion();
 
-
-template <typename CharT, typename Traits>
-basic_ostream<CharT, Traits>& operator<<(
-	basic_ostream<CharT, Traits>& out, const GrammerObject& r)
-	{  
-		return out<< r.toString();
-	}
-
-template <typename CharT, typename Traits>
-basic_ostream<CharT, Traits>& operator<<(
-	basic_ostream<CharT, Traits>& out, const Rule& r)
-	{  
-		return out<< r.toString();
-	}
-
-template <typename CharT, typename Traits>
-basic_ostream<CharT, Traits>& operator<<(
-	basic_ostream<CharT, Traits>& out, const Terminal& r)
-	{  
-		return out<< r.toString();
-	}
-
-template <typename CharT, typename Traits>
-basic_ostream<CharT, Traits>& operator<<(
-	basic_ostream<CharT, Traits>& out, const NonTerminal& r)
-	{  
-		return out<< r.toString();
-	}
-
-
-//ostream& operator<<(ostream& out, const Rule r);
-//ostream& operator<<(ostream& out, const NonTerminal r);
-
 #endif
 

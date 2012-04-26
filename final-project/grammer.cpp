@@ -46,14 +46,14 @@ Grammer::Grammer(vector<Terminal*> terminals, vector<NonTerminal*> nonterminals)
  * Print Statements
  **********************/
 string GrammerObject::toString(){
-	return "I am the GrammerObject: " + identifier;
+	return identifier;
 }
 
 string Rule::toString(){
 	string out = "[ ";
 	for(int i = 0; i < token.size(); i++){
 		if(i>0) out += ", ";
-		out += token[i]->toString();
+		out += token[i]->identifier;
 	}
 	out += " ]";
 	if(token.size() == 0) out = "[ (EMPTY) ]";

@@ -14,6 +14,15 @@ int main(int argc, char* argv[]) {
 	
 	readGrammer(&grammerFile);
 
+	cout << "Terminals: " << endl; 
+	for(int i = 0; i < terminals.size(); i++)
+		cout<< terminals[i]->toString() << "\t";
+	cout << endl;
+
+	cout << "NonTerminals: " << endl; 
+	for(int i = 0; i < nonterminals.size(); i++)
+		cout<< nonterminals[i]->toString() << endl;
+
 	printf("hello world");
 	getchar();
 	return 0;
