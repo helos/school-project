@@ -12,8 +12,12 @@ vector<NonTerminal*> nonterminals;
 NonTerminal *start = NULL;
 vector<Terminal*> input;
 
-void buildInput(Terminal* t){
-	
+void buildInput(string s){
+	Terminal* t = findTerminal(s);
+	Terminal* INTNUM = findTerminal("INTNUM");
+	if(t == INTNUM)
+		if(input[input.size()-1] == t)
+			return;
 }
 
 extern Rule *empty = new Rule(deque<GrammerObject*>());
@@ -92,7 +96,7 @@ void readInput(istream* in){
 
 			break;
 
-		case isdigit(c):
+		case '1':
 
 			break;
 	}
