@@ -75,16 +75,18 @@ void readInput(istream* in){
 
 	string out = "";
 	for(int i = 0; i < len; i++){
+		int j = 1;
 		if(isdigit(c[i])){
-			while(i < len & isdigit(c[i+1])){
+			while(i < len && isdigit(c[i+1])){
 				i++;
 				cout << "Skipping: " << c[i] << endl;
 			}
 			out += "1";
 		
-		} else if(isalpha(c[i])){
-			while(i < len && isalpha(c[i+1])){
+		} else if(isalpha(c[i]) || c[i] == '_'){
+			while(i < len && j<10 && (isalpha(c[i+1]) || (c[i+1] == '_' && (isalpha(c[i+2]) || isdigit(c[i+2]))) || isdigit(c[i+1]))){
 				i++;
+				j++;
 				cout << "Skipping: " << c[i] << endl;
 			}
 			out += "a";

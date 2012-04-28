@@ -45,12 +45,19 @@ int main(int argc, char* argv[]) {
 
 
 	readInput(&inputFile);
-	for (int i = 0; i < input.size(); i++)
-		cout << input[i]->toString() << endl;
-	
+
+	printLanguage();
+		
 	printf("Finished");
 	getchar();
 	return 0;
+}
+
+void printLanguage(){
+	cout << "Converted Language: " ;
+	for (int i = 0; i < input.size(); i++)
+		cout << input[i]->toString() << " ";
+	cout << endl;
 }
 
 

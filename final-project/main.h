@@ -15,5 +15,6 @@ void computeFirsts();
 void printFirsts();
 void computeFollows();
 void printFollows();
+void printLanguage();
 
 #endif
