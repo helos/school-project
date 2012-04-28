@@ -29,6 +29,11 @@ int main(int argc, char* argv[]) {
 	computeFollows();
 	printFollows();
 
+	cout << endl << "Parsing Table" << endl;
+
+	ParsingTable table(nonterminals, terminals);
+	table.print();
+
 	printf("Finished");
 	getchar();
 	return 0;

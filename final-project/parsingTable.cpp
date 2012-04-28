@@ -26,6 +26,8 @@ void ParsingTable::createTables() {
 		//For each rule in this nonterminal
 		for(int j=0; j< current->rules.size(); j++) {
 
+			if(current->rules[j] == empty) continue;
+
 			//get rule and first token
 			Rule *currentRule = current->rules[j];
 			GrammerObject *firstToken = currentRule->token[0];
@@ -55,7 +57,7 @@ void ParsingTable::createTables() {
 
 int ParsingTable::findTerminal(GrammerObject* terminal) {
 	if(!terminal->isTerminal()) {
-		cout << "Could not recognize " << terminal->identifier << endl;
+		cout << "Could not recognize terminal " << terminal->identifier << endl;
 		return -1;
 	}
 
@@ -64,13 +66,13 @@ int ParsingTable::findTerminal(GrammerObject* terminal) {
 			return i;
 	}
 
-	cout << "Could not recognize " << terminal->identifier << endl;
+	cout << "Could not recognize terminal " << terminal->identifier << endl;
 	return -1;
 }
 
 int ParsingTable::findNonTerminal(GrammerObject* nonterminal) {
 	if(nonterminal->isTerminal()) {
-		cout << "Could not recognize " << nonterminal->identifier << endl;
+		cout << "Could not recognize nonterminal " << nonterminal->identifier << endl;
 		return -1;
 	}
 
@@ -79,10 +81,30 @@ int ParsingTable::findNonTerminal(GrammerObject* nonterminal) {
 			return i;
 	}
 
-	cout << "Could not recognize " << nonterminal->identifier << endl;
+	cout << "Could not recognize nonterminal " << nonterminal->identifier << endl;
 	return -1;
 }
 
 Rule *ParsingTable::parse(NonTerminal *state, Terminal *match) {
 	return table[findNonTerminal(state)][findTerminal(match)];
+}
+
+void ParsingTable::print() {
+	cout << "\t";
+	for(vector<Terminal*>::iterator i=t.begin(); i!=t.end(); i++)
+		cout << " | " << (*i)->identifier;
+	cout << endl;
+	for(int i=0; i<nt.size(); i++) {
+		cout << (nt[i])->identifier << " | ";
+
+		for(int j=0; j<t.size(); j++) {
+			cout << " | ";
+			if(table[i][j] == NULL)
+				cout << "\t";
+			else
+				cout << table[i][j]->toString();
+		}
+
+		cout << "\n";
+	}
 }
