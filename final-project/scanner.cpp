@@ -10,6 +10,7 @@ using namespace std;
 vector<Terminal*> terminals;
 vector<NonTerminal*> nonterminals;
 NonTerminal *start = NULL;
+vector<Terminal*> input;
 
 extern Rule *empty = new Rule(deque<GrammerObject*>());
 
@@ -47,6 +48,49 @@ void readGrammer(istream *in) {
 		if(in->eof()) break;
 
 		getline(*in,line);
+	}
+}
+
+void readInput(istream* in){
+	string line;
+	char c;
+
+	getline(*in, line);
+
+
+	switch(c){
+		case '(':
+
+			break;
+		case ')':
+
+			break;
+		case ':=':
+
+			break;
+		case ',':
+
+			break;
+		case ';':
+
+			break;
+		case '+':
+
+			break;
+
+		case '-':
+
+			break;
+		case '*':
+
+			break;
+		case '%':
+
+			break;
+
+		case isdigit(c):
+
+			break;
 	}
 }
 
