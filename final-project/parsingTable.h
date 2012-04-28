@@ -24,6 +24,8 @@ public:
 
 	//Get next rule. NULL indicates a problem
 	Rule *parse(NonTerminal*,Terminal*);
+
+	void print();
 };
 
 
