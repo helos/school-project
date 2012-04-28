@@ -51,7 +51,7 @@ public:
 		bool changed;
 		bool computed;
 		bool hasEmptySet;
-		set<int> unSolved;
+		vector<int> unSolved;
 		set<Terminal*> terminals;
 		set<NonTerminal*> nonTerminals;
 	} first;

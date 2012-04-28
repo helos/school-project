@@ -32,9 +32,11 @@ Terminal::Terminal(string terminal) {
 NonTerminal::NonTerminal(string identifier) {
 	rules = vector<Rule*>();
 	this->identifier = identifier;
+	hasEmptySet = false;
 
 	first.changed = false;
 	first.computed = false;
+	first.hasEmptySet = false;
 }
 
 Grammer::Grammer(vector<Terminal*> terminals, vector<NonTerminal*> nonterminals) {
@@ -93,7 +95,9 @@ string NonTerminal::printFirst(){
 		if(it != first.terminals.begin()) out += ", ";
 		out += (*it)->identifier;
 	}
-	return out + " }";
+	if(first.hasEmptySet) out += ", (EMPTY)";
+	out += " }";
+	return out;
 }
 
 
@@ -109,7 +113,7 @@ void NonTerminal::addRule(Rule *newRule) {
 	rules.push_back(newRule);
 	if(newRule == empty) {
 		hasEmptySet = true;
-		first.hasEmptySet = true;
+		//first.hasEmptySet = true;
 	}
 	first.computed = false; // flag first set as unsolved
 }
@@ -133,7 +137,7 @@ void NonTerminal::calculateFirst(){
 			first.terminals.insert((Terminal*)(rules[i]->token[0]));
 		}else{
 			//keep track of unsolved line numbers
-			first.unSolved.insert(i);
+			first.unSolved.push_back(i);
 		}
 	}
 
@@ -145,11 +149,11 @@ void NonTerminal::calculateFirst(){
 
 	//add all possible nonTerminals
 	for(int i = 0; i < first.unSolved.size(); i++){
-		for(int j = 0; j < rules[i]->token.size(); j++){
-			first.nonTerminals.insert((NonTerminal*)rules[i]->token[j]);
-			if(((NonTerminal*)rules[i]->token[j])->hasEmptySet){
+		for(int j = 0; j < rules[first.unSolved[i]]->token.size(); j++){
+			first.nonTerminals.insert((NonTerminal*)rules[first.unSolved[i]]->token[j]);
+			if(((NonTerminal*)rules[first.unSolved[i]]->token[j])->hasEmptySet){
 				
-			}else{j = rules[i]->token.size();}
+			}else{j = rules[first.unSolved[i]]->token.size();}
 		}
 	}
 
@@ -166,17 +170,16 @@ void NonTerminal::calculateFirst(){
 		}
 	}
 
-
 	//double check if it has an empty set
 	for(int i = 0; i < first.unSolved.size(); i++){
-		for(int j = 0; j < rules[i]->token.size(); j++){
-			if(((NonTerminal*)rules[i]->token[j])->first.hasEmptySet){
+		for(int j = 0; j < rules[first.unSolved[i]]->token.size(); j++){
+			if(((NonTerminal*)rules[first.unSolved[i]]->token[j])->first.hasEmptySet){
 				
-			}else{j = rules[i]->token.size();}
+			}else{j = rules[first.unSolved[i]]->token.size();}
 			first.hasEmptySet = true;
 		}
 	}
-
+	
 	first.computed = true;
 	first.changed = false;
 }
