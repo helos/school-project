@@ -214,7 +214,7 @@ void NonTerminal::calculateFollow(){
 			}else{
 				set<Terminal*>::iterator it3;
 				for(it3 = ((NonTerminal*)rules[i]->token[j+1])->first.terminals.begin(); it3 != ((NonTerminal*)rules[i]->token[j+1])->first.terminals.end(); it3++ ){
-					follow.terminals.insert(*it3);
+					((NonTerminal*)rules[i]->token[j+1])->follow.terminals.insert(*it3);
 				}
 			}
 		}
