@@ -214,16 +214,18 @@ void NonTerminal::calculateFollow(){
 	
 	for(int i=0; i < rules.size(); i++){
 		for(int j=0; j+1 < rules[i]->token.size(); j++){
-			if(rules[i]->token[j+1]->isTerminal()){
-				follow.terminals.insert((Terminal*)rules[i]->token[j+1]);
-			}else{
-				set<Terminal*>::iterator it3;
-				for(int k = j+1; k < rules[i]->token.size(); k++){
-					if(!rules[i]->token[k]->isTerminal()){
-						for(it3 = ((NonTerminal*)rules[i]->token[k])->first.terminals.begin(); it3 != ((NonTerminal*)rules[i]->token[k])->first.terminals.end(); it3++ ){
-							((NonTerminal*)rules[i]->token[k])->follow.terminals.insert(*it3);
-						}
-					}else{ k += rules[i]->token.size();}
+			if(!rules[i]->token[j]->isTerminal()){
+				if(rules[i]->token[j+1]->isTerminal()){
+					((NonTerminal*)rules[i]->token[j])->follow.terminals.insert((Terminal*)rules[i]->token[j+1]);
+				}else{
+					set<Terminal*>::iterator it3;
+					for(int k = j+1; k < rules[i]->token.size(); k++){
+						if(!rules[i]->token[k]->isTerminal()){
+							for(it3 = ((NonTerminal*)rules[i]->token[k])->first.terminals.begin(); it3 != ((NonTerminal*)rules[i]->token[k])->first.terminals.end(); it3++ ){
+								((NonTerminal*)rules[i]->token[j])->follow.terminals.insert(*it3);
+							}
+						}else{ k += rules[i]->token.size();}
+					}
 				}
 			}
 		}
