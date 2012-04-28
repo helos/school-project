@@ -9,5 +9,7 @@ using namespace std;
 #define __MAIN__
 
 void printTheGrammer();
+void computeFirsts();
+void printFirsts();
 
 #endif

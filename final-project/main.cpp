@@ -21,6 +21,10 @@ int main(int argc, char* argv[]) {
 	cout << endl << "Removed Left Factoring" << endl;
 	printTheGrammer();
 
+	cout << endl << "Compute the Firsts" << endl;
+	computeFirsts();
+	printFirsts();
+
 	printf("Finished");
 	getchar();
 	return 0;
@@ -46,4 +50,17 @@ void printTheGrammer(){
 			cout<< nonterminals[i]->toString(j) << endl;
 	cout << "=================================" << endl;	
 
+}
+
+
+void computeFirsts(){
+	for(int i = 0; i < nonterminals.size(); i++){
+		nonterminals[i]->calculateFirst();
+	}
+}
+
+void printFirsts(){
+	for(int i = 0; i < nonterminals.size(); i++){
+		cout << nonterminals[i]->printFirst() << endl;
+	}
 }
