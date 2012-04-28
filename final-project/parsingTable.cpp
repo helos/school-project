@@ -1,5 +1,6 @@
 #include "parsingTable.h"
 #include <iostream>
+#include <fstream>
 
 ParsingTable::ParsingTable(vector<NonTerminal*> nonterminals, vector<Terminal*> terminals) {
 	nt = nonterminals;
@@ -90,21 +91,24 @@ Rule *ParsingTable::parse(NonTerminal *state, Terminal *match) {
 }
 
 void ParsingTable::print() {
-	cout << "\t";
+
+	ofstream outFile("ParseTable.txt", ifstream::out);
+
+	outFile << "\t\t";
 	for(vector<Terminal*>::iterator i=t.begin(); i!=t.end(); i++)
-		cout << " | " << (*i)->identifier;
-	cout << endl;
+		outFile << "\t| " << (*i)->identifier;
+	outFile << endl;
 	for(int i=0; i<nt.size(); i++) {
-		cout << (nt[i])->identifier << " | ";
+		outFile << (nt[i])->identifier << "\t";
 
 		for(int j=0; j<t.size(); j++) {
-			cout << " | ";
+			outFile << "\t| ";
 			if(table[i][j] == NULL)
-				cout << "\t";
+				outFile << "\t\t\t";
 			else
-				cout << table[i][j]->toString();
+				outFile << table[i][j]->toString();
 		}
 
-		cout << "\n";
+		outFile << "\n";
 	}
 }
