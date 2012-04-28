@@ -113,7 +113,7 @@ void NonTerminal::addRule(Rule *newRule) {
 	rules.push_back(newRule);
 	if(newRule == empty) {
 		hasEmptySet = true;
-		//first.hasEmptySet = true;
+		first.hasEmptySet = true;
 	}
 	first.computed = false; // flag first set as unsolved
 }
@@ -174,9 +174,11 @@ void NonTerminal::calculateFirst(){
 	for(int i = 0; i < first.unSolved.size(); i++){
 		for(int j = 0; j < rules[first.unSolved[i]]->token.size(); j++){
 			if(((NonTerminal*)rules[first.unSolved[i]]->token[j])->first.hasEmptySet){
-				
-			}else{j = rules[first.unSolved[i]]->token.size();}
-			first.hasEmptySet = true;
+				if(j+1 == rules[first.unSolved[i]]->token.size())
+					first.hasEmptySet = true;
+			}else{
+				j = rules[first.unSolved[i]]->token.size();
+			}
 		}
 	}
 	

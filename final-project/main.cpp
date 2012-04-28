@@ -60,7 +60,12 @@ void computeFirsts(){
 }
 
 void printFirsts(){
+	cout << endl 
+		 << "=================================" << endl
+		 << "FIRST SETS:" << endl
+		 << "-------------------"<< endl;
 	for(int i = 0; i < nonterminals.size(); i++){
 		cout << nonterminals[i]->printFirst() << endl;
 	}
+	cout << "=================================" << endl;	
 }
