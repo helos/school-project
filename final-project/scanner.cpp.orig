@@ -10,6 +10,15 @@ using namespace std;
 vector<Terminal*> terminals;
 vector<NonTerminal*> nonterminals;
 NonTerminal *start = NULL;
+vector<Terminal*> input;
+
+void buildInput(string s){
+	Terminal* t = findTerminal(s);
+	Terminal* INTNUM = findTerminal("INTNUM");
+	if(t == INTNUM)
+		if(input[input.size()-1] == t)
+			return;
+}
 
 extern Rule *empty = new Rule(deque<GrammerObject*>());
 
@@ -24,17 +33,14 @@ void readGrammer(istream *in) {
 	getline(*in,line);
 	loadTerminals(line);
 
+
 	//load nonterminals from line
 	getline(*in,line);
 	loadNonTerminals(line);
 
 	//get start symbol
 	getline(*in,line);
-<<<<<<< HEAD
-	size_t space = line.find(' '+1);
-=======
 	size_t space = line.find(' ')+1;
->>>>>>> cee48403343a2a114d968cd0ba8724ec2dadc7ba
 	start = findNonTerminal(line.substr(space));
 
 	assert(start != NULL);
@@ -47,7 +53,109 @@ void readGrammer(istream *in) {
 		//load rule
 		loadRule(line);
 
+		if(in->eof()) break;
+
 		getline(*in,line);
+	}
+}
+
+/**
+* Reads in the parse string and assigns the correct Terminals 
+* to the input vector*/
+void readInput(istream* in){
+	//Input data
+	string line;
+	getline(*in, line);
+
+	//Convert the input into a character array
+	char* c = new char[line.size() +1];
+	c[line.size()]=0;
+	memcpy(c, line.c_str(), line.size());
+
+<<<<<<< HEAD
+	switch(c){
+		case '(':
+
+			break;
+		case ')':
+
+			break;
+		case ':=':
+
+			break;
+		case ',':
+
+			break;
+		case ';':
+
+			break;
+		case '+':
+
+			break;
+
+		case '-':
+
+			break;
+		case '*':
+
+			break;
+		case '%':
+
+			break;
+
+		case '1':
+
+			break;
+=======
+	/*string out = "";
+	for(int i = 0; i < sizeof(c); i++){
+		if(isdigit(c[i])){
+			while(i+1 < sizeof(c) && isdigit(c[i+1])){
+				i++;
+			}
+			out += "1";
+		} else if(isalpha(c[i])){
+			while(i+1 < sizeof(c) && isalpha(c[i+1])){
+				i++;
+			}
+			out += "a";
+		} else {
+			out += c[i];
+		}
+	}
+	
+	c = new char[out.size() +1];
+	c[out.size()]=0;
+	memcpy(c, out.c_str(), out.size());*/
+	
+	//Check each character to detect for Terimals and push them into input
+	for(int i = 0; i < sizeof(c); i++){
+		 if (c[i] == '('){
+			 input.push_back(findTerminal("LEFTPAR"));
+		 } else if(c[i] == ')'){
+			 input.push_back(findTerminal("RIGHTPAR"));
+		 } else if(c[i] == ':='){
+			 input.push_back(findTerminal("ASSIGN"));
+		 } else if(c[i] == ','){
+			 input.push_back(findTerminal("COMMA"));
+		 } else if (c[i] == ';'){
+			 input.push_back(findTerminal("SEMICOLON"));
+		 } else if (c[i] == '+'){
+			 input.push_back(findTerminal("PLUS"));
+		 } else if (c[i] == '-'){
+			 input.push_back(findTerminal("MINUS"));
+		 } else if (c[i] == '*'){
+			 input.push_back(findTerminal("MULTIPLY"));
+		 } else if (c[i] == '%'){
+			 input.push_back(findTerminal("MODULO"));
+		 } else if (c[i] == '1'){
+			 input.push_back(findTerminal("INTNUM"));
+		 } else if (c[i] == '_'){
+			 input.push_back(findTerminal("ID"));
+		 } else if (c[i] == 'a'){
+			 input.push_back(findTerminal("ID"));
+		 } else { cout << "ERROR: " << c[i] << endl; }
+>>>>>>> origin/master
 	}
 }
 
@@ -85,6 +193,8 @@ Terminal* findTerminal(string identifier) {
 			return terminals[i];
 	}
 
+	cout << "Could not find " << identifier << endl;
+
 	return NULL;
 }
 
@@ -95,6 +205,8 @@ NonTerminal* findNonTerminal(string identifier) {
 		if(nonterminals[i]->identifier.compare(identifier) == 0)
 			return nonterminals[i];
 	}
+
+	cout << "Could not find " << identifier << endl;
 
 	return NULL;
 }
@@ -165,12 +277,14 @@ void removeLeftRecursion() {
 		NonTerminal* ai = nonterminals[i];
 
 		//for each non terminal processed before this one
-		for(int j=0; j<i ; i++) {
+		for(int j=0; j<i ; j++) {
 			NonTerminal* aj = nonterminals[j];
 			
 			//check to see if any rules start with this earlier nonterminal
 			for(int k = 0; k < ai->rules.size(); k++) {
 				Rule rule = *ai->rules[k];
+
+				if(rule.token.size() <= 0) break;
 
 				//if found must replace with all rules of aj
 				if(rule.token[0] == aj) {
@@ -205,28 +319,54 @@ void removeLeftRecursion() {
 }
 
 void removeImmediateLeft(NonTerminal* a) {
-	NonTerminal* aPrime = new NonTerminal(a->identifier + " ' ");
+	NonTerminal* aPrime = new NonTerminal(a->identifier + "'");
+
+	bool dirty = false;
 
 	for(int i = 0; i < a->rules.size(); i++) {
+
+		//sanity check, don't operate on empty rule
+		if(a->rules[i]->token.size() <= 0) break;
+
+		//Check rule for left recursion
 		GrammerObject* first = a->rules[i]->token[0];
 		if(a == first) {
+
+			//Mark that this occured for later
+			dirty = true;
+
+			//take the violating rule and remove the recursion
 			Rule* rulePrime = a->rules[i];
 			rulePrime->token.pop_front();
-			aPrime->addRule(rulePrime);
-			nonterminals.push_back(aPrime);
-			rulePrime->token.push_back(aPrime);
 
-			aPrime->addRule(new Rule(deque<GrammerObject*>(0)));
+			//add the rule to nonterminal prime and end with loop back
+			aPrime->addRule(rulePrime);
+			rulePrime->token.push_back(aPrime);
 
 			a->rules.erase(a->rules.begin() + i);
 			i--;
 		}
 	}
 
-	for(vector<Rule*>::iterator i = a->rules.begin(); i != a->rules.end(); i++) {
-		(*i)->token.push_back(aPrime);
+	if(dirty) {
+		nonterminals.push_back(aPrime);
+
+		//nt prime must have empty rule
+		aPrime->addRule(empty);
+
+		//For all remaining rules add nt prime to the end
+		for(vector<Rule*>::iterator i = a->rules.begin(); i != a->rules.end(); i++)
+			(*i)->token.push_back(aPrime);
 	}
 	
+}
+
+void removeLeftFactoring(NonTerminal*);
+
+void removeLeftFactoring() {
+	vector<NonTerminal*>::iterator i = nonterminals.begin();
+	for(; i != nonterminals.end(); i++)
+		removeLeftFactoring(*i);
 }
 
 void removeLeftFactoring(NonTerminal* a){
@@ -239,6 +379,9 @@ void removeLeftFactoring(NonTerminal* a){
 
 	//For all rules
 	for(int i = 0; i < a->rules.size(); i++){
+
+		if(a->rules[i] == empty) continue;
+
 		//Clear the rules to test for the next iteration
 		listRules.clear();
 
@@ -248,7 +391,9 @@ void removeLeftFactoring(NonTerminal* a){
 		listRules.push_back(a->rules[i]);
 
 		//Gather all rules with the same start as rule i
-		for(int j = i+1; a->rules.size(); j++){
+		for(int j = i+1; j < a->rules.size(); j++){
+
+			if(a->rules[j] == empty) continue;
 			
 			//Test to see if begining of rule j matches rule i
 			if(a->rules[i]->token[0] == a->rules[j]->token[0]){

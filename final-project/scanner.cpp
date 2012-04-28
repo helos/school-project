@@ -70,31 +70,37 @@ void readInput(istream* in){
 	//Convert the input into a character array
 	char* c = new char[line.size() +1];
 	c[line.size()]=0;
+	int len = line.size();
 	memcpy(c, line.c_str(), line.size());
 
-	/*string out = "";
-	for(int i = 0; i < sizeof(c); i++){
+	string out = "";
+	for(int i = 0; i < len; i++){
 		if(isdigit(c[i])){
-			while(i+1 < sizeof(c) && isdigit(c[i+1])){
+			while(i < len & isdigit(c[i+1])){
 				i++;
+				cout << "Skipping: " << c[i] << endl;
 			}
 			out += "1";
+		
 		} else if(isalpha(c[i])){
-			while(i+1 < sizeof(c) && isalpha(c[i+1])){
+			while(i < len && isalpha(c[i+1])){
 				i++;
+				cout << "Skipping: " << c[i] << endl;
 			}
 			out += "a";
+			
 		} else {
 			out += c[i];
 		}
 	}
-	
+	cout << out << endl;
 	c = new char[out.size() +1];
+	len = out.size();
 	c[out.size()]=0;
-	memcpy(c, out.c_str(), out.size());*/
+	memcpy(c, out.c_str(), out.size());
 	
 	//Check each character to detect for Terimals and push them into input
-	for(int i = 0; i < sizeof(c); i++){
+	for(int i = 0; i < len; i++){
 		 if (c[i] == '('){
 			 input.push_back(findTerminal("LEFTPAR"));
 		 } else if(c[i] == ')'){
