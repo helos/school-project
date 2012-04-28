@@ -24,6 +24,10 @@ int main(int argc, char* argv[]) {
 	cout << endl << "Compute the Firsts" << endl;
 	computeFirsts();
 	printFirsts();
+	
+	cout << endl << "Compute the Follows" << endl;
+	computeFollows();
+	printFollows();
 
 	printf("Finished");
 	getchar();
@@ -60,7 +64,31 @@ void computeFirsts(){
 }
 
 void printFirsts(){
+	cout << endl 
+		 << "=================================" << endl
+		 << "FIRST SETS:" << endl
+		 << "-------------------"<< endl;
 	for(int i = 0; i < nonterminals.size(); i++){
 		cout << nonterminals[i]->printFirst() << endl;
 	}
+	cout << "=================================" << endl;	
+}
+
+
+void computeFollows(){
+	for(int i = 0; i < nonterminals.size(); i++){
+		nonterminals[i]->calculateFollow();
+	}
+	start->follow.isStart = true;
+}
+
+void printFollows(){
+	cout << endl 
+		 << "=================================" << endl
+		 << "FOLLOW SETS:" << endl
+		 << "-------------------"<< endl;
+	for(int i = 0; i < nonterminals.size(); i++){
+		cout << nonterminals[i]->printFollow() << endl;
+	}
+	cout << "=================================" << endl;	
 }

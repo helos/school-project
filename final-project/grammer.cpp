@@ -32,9 +32,15 @@ Terminal::Terminal(string terminal) {
 NonTerminal::NonTerminal(string identifier) {
 	rules = vector<Rule*>();
 	this->identifier = identifier;
-
+	hasEmptySet = false;
+	
 	first.changed = false;
 	first.computed = false;
+	first.hasEmptySet = false;
+
+	
+	follow.computed = false;
+	follow.isStart = false;
 }
 
 Grammer::Grammer(vector<Terminal*> terminals, vector<NonTerminal*> nonterminals) {
@@ -93,7 +99,26 @@ string NonTerminal::printFirst(){
 		if(it != first.terminals.begin()) out += ", ";
 		out += (*it)->identifier;
 	}
-	return out + " }";
+	if(first.hasEmptySet) out += ", (EMPTY)";
+	out += " }";
+	return out;
+}
+
+string NonTerminal::printFollow(){
+	string out = "Follow( " + identifier + " ) = { ";
+	set<Terminal*>::iterator it;
+	int i = 0;
+	for(it = follow.terminals.begin(); it != follow.terminals.end(); it++ ){
+		if(it != follow.terminals.begin()) out += ", ";
+		out += (*it)->identifier;
+		i++;
+	}
+	if(follow.isStart) {
+		if(i>0) out += ", ";
+		out += "$";
+	}
+	out += " }";
+	return out;
 }
 
 
@@ -133,7 +158,7 @@ void NonTerminal::calculateFirst(){
 			first.terminals.insert((Terminal*)(rules[i]->token[0]));
 		}else{
 			//keep track of unsolved line numbers
-			first.unSolved.insert(i);
+			first.unSolved.push_back(i);
 		}
 	}
 
@@ -145,11 +170,11 @@ void NonTerminal::calculateFirst(){
 
 	//add all possible nonTerminals
 	for(int i = 0; i < first.unSolved.size(); i++){
-		for(int j = 0; j < rules[i]->token.size(); j++){
-			first.nonTerminals.insert((NonTerminal*)rules[i]->token[j]);
-			if(((NonTerminal*)rules[i]->token[j])->hasEmptySet){
+		for(int j = 0; j < rules[first.unSolved[i]]->token.size(); j++){
+			first.nonTerminals.insert((NonTerminal*)rules[first.unSolved[i]]->token[j]);
+			if(((NonTerminal*)rules[first.unSolved[i]]->token[j])->hasEmptySet){
 				
-			}else{j = rules[i]->token.size();}
+			}else{j = rules[first.unSolved[i]]->token.size();}
 		}
 	}
 
@@ -166,17 +191,39 @@ void NonTerminal::calculateFirst(){
 		}
 	}
 
-
 	//double check if it has an empty set
 	for(int i = 0; i < first.unSolved.size(); i++){
-		for(int j = 0; j < rules[i]->token.size(); j++){
-			if(((NonTerminal*)rules[i]->token[j])->first.hasEmptySet){
+		for(int j = 0; j < rules[first.unSolved[i]]->token.size(); j++){
+			if(((NonTerminal*)rules[first.unSolved[i]]->token[j])->first.hasEmptySet){
+				if(j+1 == rules[first.unSolved[i]]->token.size())
+					first.hasEmptySet = true;
+			}else{
+				j = rules[first.unSolved[i]]->token.size();
+			}
+		}
+	}
+	
+	first.computed = true;
+	first.changed = false;
+}
+
+void NonTerminal::calculateFollow(){
+
+	//check to see if it is solved
+	if(follow.computed == true) return;
+	
+	for(int i=0; i < rules.size(); i++){
+		for(int j=0; j+1 < rules[i]->token.size(); j++){
+			if(rules[i]->token[j+1]->isTerminal()){
 				
-			}else{j = rules[i]->token.size();}
-			first.hasEmptySet = true;
+			}else{
+				set<Terminal*>::iterator it3;
+				for(it3 = ((NonTerminal*)rules[i]->token[j+1])->first.terminals.begin(); it3 != ((NonTerminal*)rules[i]->token[j+1])->first.terminals.end(); it3++ ){
+					((NonTerminal*)rules[i]->token[j+1])->follow.terminals.insert(*it3);
+				}
+			}
 		}
 	}
 
-	first.computed = true;
-	first.changed = false;
+	follow.computed = true;
 }

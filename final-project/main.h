@@ -11,5 +11,7 @@ using namespace std;
 void printTheGrammer();
 void computeFirsts();
 void printFirsts();
+void computeFollows();
+void printFollows();
 
 #endif
