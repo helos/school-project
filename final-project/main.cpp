@@ -10,8 +10,10 @@ int main(int argc, char* argv[]) {
 	}
 
 	ifstream grammerFile(argv[1], ifstream::in);
-	
+	ifstream inputFile(argv[2], ifstream::in);
+
 	readGrammer(&grammerFile);
+	
 
 	cout << endl << "Read The Grammer" << endl;
 	printTheGrammer();
@@ -38,11 +40,14 @@ int main(int argc, char* argv[]) {
 
 	ParsingTable table(nonterminals, terminals);
 	table.print();
-
-	ifstream inputFile(argv[2], ifstream::in);
-
+	
 	parseThis(&table,&inputFile);
 
+
+	readInput(&inputFile);
+	for (int i = 0; i < input.size(); i++)
+		cout << input[i]->toString() << endl;
+	
 	printf("Finished");
 	getchar();
 	return 0;

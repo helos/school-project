@@ -51,46 +51,67 @@ void readGrammer(istream *in) {
 	}
 }
 
+/**
+* Reads in the parse string and assigns the correct Terminals 
+* to the input vector*/
 void readInput(istream* in){
+	//Input data
 	string line;
-	char c;
-
 	getline(*in, line);
 
+	//Convert the input into a character array
+	char* c = new char[line.size() +1];
+	c[line.size()]=0;
+	memcpy(c, line.c_str(), line.size());
 
-	switch(c){
-		case '(':
-
-			break;
-		case ')':
-
-			break;
-		case ':=':
-
-			break;
-		case ',':
-
-			break;
-		case ';':
-
-			break;
-		case '+':
-
-			break;
-
-		case '-':
-
-			break;
-		case '*':
-
-			break;
-		case '%':
-
-			break;
-
-		case isdigit(c):
-
-			break;
+	/*string out = "";
+	for(int i = 0; i < sizeof(c); i++){
+		if(isdigit(c[i])){
+			while(i+1 < sizeof(c) && isdigit(c[i+1])){
+				i++;
+			}
+			out += "1";
+		} else if(isalpha(c[i])){
+			while(i+1 < sizeof(c) && isalpha(c[i+1])){
+				i++;
+			}
+			out += "a";
+		} else {
+			out += c[i];
+		}
+	}
+	
+	c = new char[out.size() +1];
+	c[out.size()]=0;
+	memcpy(c, out.c_str(), out.size());*/
+	
+	//Check each character to detect for Terimals and push them into input
+	for(int i = 0; i < sizeof(c); i++){
+		 if (c[i] == '('){
+			 input.push_back(findTerminal("LEFTPAR"));
+		 } else if(c[i] == ')'){
+			 input.push_back(findTerminal("RIGHTPAR"));
+		 } else if(c[i] == ':='){
+			 input.push_back(findTerminal("ASSIGN"));
+		 } else if(c[i] == ','){
+			 input.push_back(findTerminal("COMMA"));
+		 } else if (c[i] == ';'){
+			 input.push_back(findTerminal("SEMICOLON"));
+		 } else if (c[i] == '+'){
+			 input.push_back(findTerminal("PLUS"));
+		 } else if (c[i] == '-'){
+			 input.push_back(findTerminal("MINUS"));
+		 } else if (c[i] == '*'){
+			 input.push_back(findTerminal("MULTIPLY"));
+		 } else if (c[i] == '%'){
+			 input.push_back(findTerminal("MODULO"));
+		 } else if (c[i] == '1'){
+			 input.push_back(findTerminal("INTNUM"));
+		 } else if (c[i] == '_'){
+			 input.push_back(findTerminal("ID"));
+		 } else if (c[i] == 'a'){
+			 input.push_back(findTerminal("ID"));
+		 } else { cout << "ERROR: " << c[i] << endl; }
 	}
 }
 
