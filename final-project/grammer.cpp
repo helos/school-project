@@ -107,11 +107,16 @@ string NonTerminal::printFirst(){
 string NonTerminal::printFollow(){
 	string out = "Follow( " + identifier + " ) = { ";
 	set<Terminal*>::iterator it;
+	int i = 0;
 	for(it = follow.terminals.begin(); it != follow.terminals.end(); it++ ){
 		if(it != follow.terminals.begin()) out += ", ";
 		out += (*it)->identifier;
+		i++;
 	}
-	if(follow.isStart) out += ", $";
+	if(follow.isStart) {
+		if(i>0) out += ", ";
+		out += "$";
+	}
 	out += " }";
 	return out;
 }
