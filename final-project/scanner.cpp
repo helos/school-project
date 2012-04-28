@@ -12,6 +12,10 @@ vector<NonTerminal*> nonterminals;
 NonTerminal *start = NULL;
 vector<Terminal*> input;
 
+void buildInput(Terminal* t){
+	
+}
+
 extern Rule *empty = new Rule(deque<GrammerObject*>());
 
 /* Reads in the Grammer and stores it in terminals
