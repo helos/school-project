@@ -1,5 +1,6 @@
 #include "grammer.h"
 
+void readInput(istream*);
 void readGrammer();
 void readGrammer(istream*);
 void loadTerminals(string);
@@ -19,5 +20,6 @@ void loadRule(string);
 extern vector<Terminal*> terminals;
 extern vector<NonTerminal*> nonterminals;
 extern NonTerminal* start;
+extern vector<Terminal*> input;
 
 #endif
