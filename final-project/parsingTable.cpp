@@ -126,6 +126,6 @@ void ParsingTable::print() {
 	system("ParseTable.txt");
 }
 
-bool parse(ParsingTable* table, string input) {
+bool parseThis(ParsingTable* table, istream* input) {
 	return false;
 }

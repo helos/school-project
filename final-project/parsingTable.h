@@ -1,6 +1,7 @@
 #include <string>
 #include <vector>
 #include <deque>
+
 #include "grammer.h"
 
 using namespace std;
@@ -28,6 +29,6 @@ public:
 	void print();
 };
 
-bool parse(ParsingTable*,ifstream);
+bool parseThis(ParsingTable*,istream*);
 
 #endif

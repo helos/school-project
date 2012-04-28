@@ -3,7 +3,8 @@
 
 #include "grammer.h"
 #include "scanner.h"
-#include "parsingTable.h";
+#include "parsingTable.h"
+
 using namespace std;
 
 #ifndef __MAIN__

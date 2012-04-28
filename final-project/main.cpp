@@ -5,7 +5,7 @@ using namespace std;
 int main(int argc, char* argv[]) {
 
 	if(argc < 3) {
-		cout << "ERROR: expect 2 arguments, the Grammer file and the input file";
+		cout << "ERROR: expect 2 arguments, the Grammer file and the input file\n";
 		return 1;
 	}
 
@@ -39,9 +39,9 @@ int main(int argc, char* argv[]) {
 	ParsingTable table(nonterminals, terminals);
 	table.print();
 
-	ifstream inputFile(argv[1], ifstream::in);
+	ifstream inputFile(argv[2], ifstream::in);
 
-	parse(&table,inputFile);
+	parseThis(&table,&inputFile);
 
 	printf("Finished");
 	getchar();
