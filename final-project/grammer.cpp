@@ -33,10 +33,14 @@ NonTerminal::NonTerminal(string identifier) {
 	rules = vector<Rule*>();
 	this->identifier = identifier;
 	hasEmptySet = false;
-
+	
 	first.changed = false;
 	first.computed = false;
 	first.hasEmptySet = false;
+
+	
+	follow.computed = false;
+	follow.isStart = false;
 }
 
 Grammer::Grammer(vector<Terminal*> terminals, vector<NonTerminal*> nonterminals) {
@@ -96,6 +100,18 @@ string NonTerminal::printFirst(){
 		out += (*it)->identifier;
 	}
 	if(first.hasEmptySet) out += ", (EMPTY)";
+	out += " }";
+	return out;
+}
+
+string NonTerminal::printFollow(){
+	string out = "Follow( " + identifier + " ) = { ";
+	set<Terminal*>::iterator it;
+	for(it = follow.terminals.begin(); it != follow.terminals.end(); it++ ){
+		if(it != follow.terminals.begin()) out += ", ";
+		out += (*it)->identifier;
+	}
+	if(follow.isStart) out += ", $";
 	out += " }";
 	return out;
 }
@@ -184,4 +200,25 @@ void NonTerminal::calculateFirst(){
 	
 	first.computed = true;
 	first.changed = false;
+}
+
+void NonTerminal::calculateFollow(){
+
+	//check to see if it is solved
+	if(follow.computed == true) return;
+	
+	for(int i=0; i < rules.size(); i++){
+		for(int j=0; j+1 < rules[i]->token.size(); j++){
+			if(rules[i]->token[j+1]->isTerminal()){
+				
+			}else{
+				set<Terminal*>::iterator it3;
+				for(it3 = ((NonTerminal*)rules[i]->token[j+1])->first.terminals.begin(); it3 != ((NonTerminal*)rules[i]->token[j+1])->first.terminals.end(); it3++ ){
+					follow.terminals.insert(*it3);
+				}
+			}
+		}
+	}
+
+	follow.computed = true;
 }

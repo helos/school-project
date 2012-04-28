@@ -55,9 +55,19 @@ public:
 		set<Terminal*> terminals;
 		set<NonTerminal*> nonTerminals;
 	} first;
+
+	struct FOLLOW{ // Declare FOLLOW struct
+		bool computed;
+		bool isStart;
+		set<Terminal*> terminals;
+		set<NonTerminal*> nonTerminals;
+	} follow;
 	
 	void calculateFirst();
 	string printFirst();
+
+	void calculateFollow();
+	string printFollow();
 
 };
 
