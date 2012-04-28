@@ -28,5 +28,6 @@ public:
 	void print();
 };
 
+bool parse(ParsingTable*,ifstream);
 
 #endif

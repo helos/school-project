@@ -6,6 +6,8 @@ ParsingTable::ParsingTable(vector<NonTerminal*> nonterminals, vector<Terminal*> 
 	nt = nonterminals;
 	t = terminals;
 
+	t.push_back(new Terminal("$"));
+
 	//dynamically allocate 2D table
 	table = new Rule **[nt.size()];
 	for(int i=0; i<nt.size(); i++)
@@ -46,15 +48,22 @@ void ParsingTable::createTables() {
 				table[i][findTerminal(*firsts)] = currentRule;
 			}
 
-			if(((NonTerminal*)firstToken)->first.hasEmptySet) {/*
-				set<Terminal*> *first = &((NonTerminal*)firstToken)->first.terminals;
-				for(set<Terminal*>::iterator firsts = first->begin(); firsts != first->end(); firsts++) {
-					table[i][findTerminal(*firsts)] = currentRule;
-				}*/
+			if(((NonTerminal*)firstToken)->first.hasEmptySet) {
+				set<Terminal*> *follow = &((NonTerminal*)firstToken)->follow.terminals;
+				for(set<Terminal*>::iterator follows = follow->begin(); follows != follow->end(); follows++) {
+					if(table[i][findTerminal(*follows)] != NULL) cout << "Double\n";
+					table[i][findTerminal(*follows)] = currentRule;
+				}
+				if(((NonTerminal*)firstToken)->follow.isStart) {
+					if(table[i][t.size()-1] != NULL) cout << "Double\n";
+					table[i][t.size()-1] = currentRule;
+				}
 			}
 		}
 	}
 }
+
+
 
 int ParsingTable::findTerminal(GrammerObject* terminal) {
 	if(!terminal->isTerminal()) {
@@ -111,4 +120,12 @@ void ParsingTable::print() {
 
 		outFile << "\n";
 	}
+
+	outFile.close();
+
+	system("ParseTable.txt");
+}
+
+bool parse(ParsingTable* table, string input) {
+	return false;
 }

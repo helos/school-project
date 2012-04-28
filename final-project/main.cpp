@@ -4,6 +4,11 @@ using namespace std;
 
 int main(int argc, char* argv[]) {
 
+	if(argc < 3) {
+		cout << "ERROR: expect 2 arguments, the Grammer file and the input file";
+		return 1;
+	}
+
 	ifstream grammerFile(argv[1], ifstream::in);
 	
 	readGrammer(&grammerFile);
@@ -33,6 +38,10 @@ int main(int argc, char* argv[]) {
 
 	ParsingTable table(nonterminals, terminals);
 	table.print();
+
+	ifstream inputFile(argv[1], ifstream::in);
+
+	parse(&table,inputFile);
 
 	printf("Finished");
 	getchar();
