@@ -11,6 +11,7 @@ vector<Terminal*> terminals;
 vector<NonTerminal*> nonterminals;
 NonTerminal *start = NULL;
 vector<Terminal*> input;
+string language;
 
 void buildInput(string s){
 	Terminal* t = findTerminal(s);
@@ -66,7 +67,7 @@ void readInput(istream* in){
 	//Input data
 	string line;
 	getline(*in, line);
-
+	language = line;
 	//Convert the input into a character array
 	char* c = new char[line.size() +1];
 	c[line.size()]=0;
@@ -79,7 +80,7 @@ void readInput(istream* in){
 		if(isdigit(c[i])){
 			while(i < len && isdigit(c[i+1])){
 				i++;
-				cout << "Skipping: " << c[i] << endl;
+				//cout << "Skipping: " << c[i] << endl;
 			}
 			out += "1";
 		
@@ -87,7 +88,7 @@ void readInput(istream* in){
 			while(i < len && j<10 && (isalpha(c[i+1]) || (c[i+1] == '_' && (isalpha(c[i+2]) || isdigit(c[i+2]))) || isdigit(c[i+1]))){
 				i++;
 				j++;
-				cout << "Skipping: " << c[i] << endl;
+				//cout << "Skipping: " << c[i] << endl;
 			}
 			out += "a";
 			
@@ -95,7 +96,7 @@ void readInput(istream* in){
 			out += c[i];
 		}
 	}
-	cout << out << endl;
+	//cout << out << endl;
 	c = new char[out.size() +1];
 	len = out.size();
 	c[out.size()]=0;

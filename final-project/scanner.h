@@ -22,4 +22,6 @@ extern vector<NonTerminal*> nonterminals;
 extern NonTerminal* start;
 extern vector<Terminal*> input;
 
+extern string language;
+
 #endif

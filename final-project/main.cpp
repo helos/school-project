@@ -36,7 +36,7 @@ int main(int argc, char* argv[]) {
 	computeFollows();
 	printFollows();
 
-	cout << endl << "Parsing Table" << endl;
+	cout << endl << "Parsing Table" << endl << "\tOpening in new Window - Close to continue" << endl << endl;
 
 	ParsingTable table(nonterminals, terminals);
 	table.print();
@@ -48,13 +48,13 @@ int main(int argc, char* argv[]) {
 
 	printLanguage();
 		
-	printf("Finished");
+	printf("\n\nFinished");
 	getchar();
 	return 0;
 }
 
 void printLanguage(){
-	cout << "Converted Language: " ;
+	cout << "Converted Language: " << language << endl ;
 	for (int i = 0; i < input.size(); i++)
 		cout << input[i]->toString() << " ";
 	cout << endl;
