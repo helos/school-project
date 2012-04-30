@@ -127,9 +127,53 @@ void ParsingTable::print() {
 }
 
 bool parseInput(ParsingTable* table) {
-	vector<GrammerObject*> pstack();
+	vector<GrammerObject*> pstack;
+
+	//start with start symbol on the stack
+	pstack.push_back(start);
 
 
 
-	return false;
+	while(pstack.size() > 0)
+	{
+		//get current symbol
+		GrammerObject *symbol = pstack.back();
+
+		Terminal *token = input.front();
+
+		//If the current symbol is a terminal match it and remove it and the input
+		if(symbol->isTerminal())
+		{
+			if(token == symbol)
+			{
+				input.pop_front();
+				pstack.pop_back();
+			}
+			else
+			{
+				return false;
+			}
+		}
+		else
+		{
+			//Get the correct expansion for the current symbol
+			Rule *next = table->parse((NonTerminal*)symbol,token);
+
+			if(next == NULL)
+			{
+				return false;
+			}
+			else
+			{
+				//Remove the old symbol and replace it with the new rule
+				pstack.pop_back();
+				for(deque<GrammerObject*>::reverse_iterator i = next->token.rbegin(); i != next->token.rend(); ++i)
+				{
+					pstack.push_back(*i);
+				}
+			}
+		}
+	}
+
+	return true;
 }
