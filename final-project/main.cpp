@@ -42,7 +42,9 @@ int main(int argc, char* argv[]) {
 	table.print();
 	
 	readInput(&inputFile);
-	parseInput(&table);
+	bool parsed = parseInput(&table);
+
+	cout << "Parsed Language: " << (parsed ? "Passed" : "Failed") << endl << endl;
 
 	printLanguage();
 		

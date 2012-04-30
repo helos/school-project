@@ -132,21 +132,23 @@ bool parseInput(ParsingTable* table) {
 	//start with start symbol on the stack
 	pstack.push_back(start);
 
+	vector<Terminal*>::iterator inputToken = input.begin();
 
-
-	while(pstack.size() > 0)
+	while(pstack.size() > 0 && inputToken != input.end())
 	{
 		//get current symbol
 		GrammerObject *symbol = pstack.back();
 
-		Terminal *token = input.front();
+		Terminal *token = *inputToken;
+
+		//cout << symbol->toString() << " , " << token->toString() << endl;
 
 		//If the current symbol is a terminal match it and remove it and the input
 		if(symbol->isTerminal())
 		{
 			if(token == symbol)
 			{
-				input.pop_front();
+				inputToken++;
 				pstack.pop_back();
 			}
 			else
@@ -175,5 +177,5 @@ bool parseInput(ParsingTable* table) {
 		}
 	}
 
-	return true;
+	return pstack.size() > 0;
 }

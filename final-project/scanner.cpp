@@ -10,7 +10,7 @@ using namespace std;
 vector<Terminal*> terminals;
 vector<NonTerminal*> nonterminals;
 NonTerminal *start = NULL;
-deque<Terminal*> input;
+vector<Terminal*> input;
 string language;
 
 void buildInput(string s){
@@ -73,7 +73,7 @@ void readInput(istream* in){
 	c[line.size()]=0;
 	int len = line.size();
 	memcpy(c, line.c_str(), line.size());
-
+	
 	string out = "";
 	for(int i = 0; i < len; i++){
 		int j = 1;
@@ -84,6 +84,13 @@ void readInput(istream* in){
 			}
 			out += "1";
 		
+		} else if(c[i] == 'b' && c[i+1] == 'e' 
+				&& c[i+2] == 'g' && c[i+3] == 'i' && c[i+4] == 'n'){
+					i+=4;
+					out += "b";
+		} else if(c[i] == 'e' && c[i+1] == 'n' && c[i+2] == 'd'){
+					i+=2;
+					out += "e";
 		} else if(isalpha(c[i]) || c[i] == '_'){
 			while(i < len && j<10 && (isalpha(c[i+1]) || (c[i+1] == '_' && (isalpha(c[i+2]) || isdigit(c[i+2]))) || isdigit(c[i+1]))){
 				i++;
@@ -131,6 +138,10 @@ void readInput(istream* in){
 			 input.push_back(findTerminal("ID"));
 		 } else if (c[i] == 'a'){
 			 input.push_back(findTerminal("ID"));
+		 } else if (c[i] == 'b'){
+			 input.push_back(findTerminal("BEGIN"));
+		 } else if (c[i] == 'e'){
+			 input.push_back(findTerminal("END"));
 		 } else { cout << "ERROR: " << c[i] << endl; }
 	}
 }
