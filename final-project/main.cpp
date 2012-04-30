@@ -41,10 +41,8 @@ int main(int argc, char* argv[]) {
 	ParsingTable table(nonterminals, terminals);
 	table.print();
 	
-	parseThis(&table,&inputFile);
-
-
 	readInput(&inputFile);
+	parseInput(&table);
 
 	printLanguage();
 		

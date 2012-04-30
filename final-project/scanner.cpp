@@ -10,7 +10,7 @@ using namespace std;
 vector<Terminal*> terminals;
 vector<NonTerminal*> nonterminals;
 NonTerminal *start = NULL;
-vector<Terminal*> input;
+deque<Terminal*> input;
 string language;
 
 void buildInput(string s){
@@ -121,7 +121,10 @@ void readInput(istream* in){
 		 } else if (c[i] == '*'){
 			 input.push_back(findTerminal("MULTIPLY"));
 		 } else if (c[i] == '%'){
-			 input.push_back(findTerminal("MODULO"));
+			 Terminal *mod = findTerminal("MODULO");
+			 if(mod == NULL)
+				 mod = findTerminal("MOD");
+			 input.push_back(mod);
 		 } else if (c[i] == '1'){
 			 input.push_back(findTerminal("INTNUM"));
 		 } else if (c[i] == '_'){

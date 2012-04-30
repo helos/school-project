@@ -126,6 +126,10 @@ void ParsingTable::print() {
 	system("ParseTable.txt");
 }
 
-bool parseThis(ParsingTable* table, istream* input) {
+bool parseInput(ParsingTable* table) {
+	vector<GrammerObject*> pstack();
+
+
+
 	return false;
 }

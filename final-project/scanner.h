@@ -20,7 +20,7 @@ void loadRule(string);
 extern vector<Terminal*> terminals;
 extern vector<NonTerminal*> nonterminals;
 extern NonTerminal* start;
-extern vector<Terminal*> input;
+extern deque<Terminal*> input;
 
 extern string language;
 

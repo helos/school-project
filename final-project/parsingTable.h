@@ -3,6 +3,7 @@
 #include <deque>
 
 #include "grammer.h"
+#include "scanner.h"
 
 using namespace std;
 
@@ -29,6 +30,6 @@ public:
 	void print();
 };
 
-bool parseThis(ParsingTable*,istream*);
+bool parseInput(ParsingTable*);
 
 #endif
