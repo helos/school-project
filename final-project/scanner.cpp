@@ -122,6 +122,7 @@ void readInput(istream* in){
 			 input.push_back(findTerminal("MULTIPLY"));
 		 } else if (c[i] == '%'){
 			 input.push_back(findTerminal("MODULO"));
+			 input.push_back(findTerminal("MOD"));
 		 } else if (c[i] == '1'){
 			 input.push_back(findTerminal("INTNUM"));
 		 } else if (c[i] == '_'){

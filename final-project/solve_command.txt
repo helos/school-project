@@ -1,0 +1,157 @@
+void Solution(void *v)
+{	
+	cout << "running Solution" << endl;	// DEBUG
+	
+	Model* model = UI->mData->mSelectedModel;
+	
+	int handleCount = model->GetHandleCount();
+	int dofCount = model->GetDofCount();
+	Vecd dF = Vecd(dofCount);
+	Vecd q = Vecd(dofCount);
+
+	Marker* handle;
+	Vec3d p;
+	Vec3d C;
+
+	// New J per Dof
+	vector<vector<double>> J;
+	J.resize(3);
+	J[0].resize(dofCount);
+	J[1].resize(dofCount);
+	J[2].resize(dofCount);
+	
+	// Changed frequently in loop.
+	TransformNode* node;
+	Mat4d parentTransform;
+	Vec4d offset;
+	Vec4d J_i;
+	Mat4d partial;
+	int column;
+
+	// Get current q configuration
+	model->mDofList.GetDofs(&q);
+
+	double epsilon = 0.0005*pow(handleCount,1.9);
+	double F;
+	double alpha = 0.022;
+
+	int frame = UI->mFrameCounter_cou->value();
+	
+	// Calculate F for each frame
+	F = 0;
+
+	for (unsigned int i=0; i<handleCount;i++)
+	{
+		handle = model->mHandleList[i];
+		p = model->mOpenedC3dFile->GetMarkerPos(frame,i);
+
+		if (p[0]*p[0]+p[1]*p[1]+p[2]*p[2] < 0.001)	// If marker is (0,0,0), then it is undefined. In that case, skip it.
+			continue;
+
+		C = handle->mGlobalPos - p;
+
+		F += C[0]*C[0]+C[1]*C[1]+C[2]*C[2];
+	}
+	//cout << "pre F: " << F << endl;
+	// Get a better q until F(q) is lower than epsilon
+	while (F>epsilon)
+	{
+		// Initialize or reset F and dF from last iteration
+		//alpha = F * F * F * 1000;
+		F = 0;
+		dF.MakeZero();
+
+		for (unsigned int i=0; i<handleCount;i++)	// For each handle...
+		{
+			// Compute C
+			p = model->mOpenedC3dFile->GetMarkerPos(frame,i);
+			if (p[0]*p[0]+p[1]*p[1]+p[2]*p[2] < 0.001)	// If marker is (0,0,0), then it is undefined. In that case, skip it.
+				continue;
+
+			handle = model->mHandleList[i];
+
+			C = handle->mGlobalPos - p;
+
+			offset = Vec4d(handle->mOffset,1);
+			
+			// Initialize or reset J from the last iteration.
+			for (unsigned int row=0; row<3;row++)
+				for (unsigned int col=0;col<dofCount;col++)
+					J[row][col]=0;
+
+			node = model->mLimbs[handle->mNodeIndex];
+
+			while (node != NULL)	// Backtrack through nodes to the root starting from the handle.
+			{
+				parentTransform = node->mParentTransform;
+
+				for (unsigned int j=0; j<node->mTransforms.size();j++) // For each transformation in the node...
+				{
+					if (node->mTransforms[j]->IsDof()) // ... that is a Dof tranformation,
+					{
+						for (unsigned int k=0; k<node->mTransforms[j]->GetDofCount();k++) // For every DOF in the transformation
+						{
+							// ... find the derivative of C for it
+							J_i = offset;
+
+							// Add transformation matrices of the children nodes to J_i
+							TransformNode* node2 = model->mLimbs[handle->mNodeIndex];
+							while (node2 != node) // Backtrack through nodes to the current node starting from the handle.
+							{
+								J_i = node2->mLocalTransform * J_i;
+								node2 = node2->mParentNode;
+							}
+
+							for (int l=node->mTransforms.size()-1; l>=0;l--) // For every local transformation (going backwards)
+							{
+								if (l==j) // apply partial derivative to the matching.
+									J_i = node->mTransforms[l]->GetDeriv(k) * J_i;
+								else // apply transformation
+									J_i = node->mTransforms[l]->GetTransform() * J_i;
+							}
+
+							J_i = parentTransform*J_i;
+				
+
+							column = node->mTransforms[j]->GetDof(k)->mId;
+							J[0][column]=J_i[0];
+							J[1][column]=J_i[1];
+							J[2][column]=J_i[2];
+						}
+					}
+				}
+
+				node = node->mParentNode;
+			}
+
+			//dF += 2 * Jtransposed * C
+			for (unsigned int j=0; j<model->GetDofCount();j++)
+			{
+				dF[j] += 2*(J[0][j]*C[0]+J[1][j]*C[1]+J[2][j]*C[2]);
+			}
+		}
+
+
+		//if (alpha>0.02) alpha = 0.02;
+		// Calculate new q
+		q = q - alpha*dF;	// Scale dF by alpha later, if desired.
+		model->SetDofs(q);
+			
+		// Calculate new F(q)
+		for (unsigned int i=0; i<model->GetHandleCount();i++)
+		{
+			p = model->mOpenedC3dFile->GetMarkerPos(frame,i);	// Getting only the first frame of the marker. Figure out how to get the frame.
+			if (p[0]*p[0]+p[1]*p[1]+p[2]*p[2] < 0.001)	// If marker is (0,0,0), then it is undefined. In that case, skip it.
+				continue;
+
+			handle = model->mHandleList[i];
+
+			//cout << "handle: " << handle->mGlobalPos[0] << ", " << handle->mGlobalPos[1] << ", " << handle->mGlobalPos[2] << endl;
+
+			C = handle->mGlobalPos - p;
+
+			F += C[0]*C[0]+C[1]*C[1]+C[2]*C[2];	// F is the sum of the squared magnitudes of all of the C's.
+		}
+		cout << "F: " << F << endl;
+	}
+}
