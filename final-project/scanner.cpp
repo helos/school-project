@@ -115,8 +115,10 @@ void readInput(istream* in){
 			 input.push_back(findTerminal("LEFTPAR"));
 		 } else if(c[i] == ')'){
 			 input.push_back(findTerminal("RIGHTPAR"));
-		 } else if(c[i] == ':='){
+		 } else if(c[i] == ':'){
 			 input.push_back(findTerminal("ASSIGN"));
+		 } else if(c[i] == '='){
+			 
 		 } else if(c[i] == ','){
 			 input.push_back(findTerminal("COMMA"));
 		 } else if (c[i] == ';'){
@@ -247,7 +249,7 @@ void loadRule(string line) {
 		}
 
 		//Add constructed rule to nonterminal
-		nonterminal->addRule(new Rule(*ruleList));
+		nonterminal->addRule( ruleList->size() > 0 ? new Rule(*ruleList) : empty);
 
 		if(end +1 == 0) break;
 

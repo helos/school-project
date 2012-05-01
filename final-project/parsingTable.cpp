@@ -26,13 +26,16 @@ void ParsingTable::createTables() {
 		
 		NonTerminal *current = nt[i];
 
+		Rule *emptyRule = NULL;
+
 		//For each rule in this nonterminal
 		for(int j=0; j< current->rules.size(); j++) {
-
-			if(current->rules[j] == empty) continue;
-
-			//get rule and first token
+			
 			Rule *currentRule = current->rules[j];
+
+			if(current->rules[j]->token.size() == 0) continue;
+
+			//get first token
 			GrammerObject *firstToken = currentRule->token[0];
 
 			//if token is a terminal that is where the rule should go
@@ -44,21 +47,18 @@ void ParsingTable::createTables() {
 			//if nonterminal must get out the first set
 			set<Terminal*> *first = &((NonTerminal*)firstToken)->first.terminals;
 			for(set<Terminal*>::iterator firsts = first->begin(); firsts != first->end(); firsts++) {
-				if(table[i][findTerminal(*firsts)] != NULL) cout << "Double\n";
 				table[i][findTerminal(*firsts)] = currentRule;
 			}
 
 			if(((NonTerminal*)firstToken)->first.hasEmptySet) {
-				set<Terminal*> *follow = &((NonTerminal*)firstToken)->follow.terminals;
-				for(set<Terminal*>::iterator follows = follow->begin(); follows != follow->end(); follows++) {
-					if(table[i][findTerminal(*follows)] != NULL) cout << "Double\n";
-					table[i][findTerminal(*follows)] = currentRule;
-				}
-				if(((NonTerminal*)firstToken)->follow.isStart) {
-					if(table[i][t.size()-1] != NULL) cout << "Double\n";
-					table[i][t.size()-1] = currentRule;
-				}
+				emptyRule = currentRule;
 			}
+		}
+
+		if(emptyRule != NULL) {
+			set<Terminal*> *follow = &current->follow.terminals;
+			for(set<Terminal*>::iterator f = follow->begin(); f != follow->end(); f++)
+				table[i][findTerminal(*f)] = emptyRule;
 		}
 	}
 }
@@ -126,6 +126,8 @@ void ParsingTable::print() {
 	system("ParseTable.txt");
 }
 
+void dump(vector<GrammerObject*>,Terminal*);
+
 bool parseInput(ParsingTable* table) {
 	vector<GrammerObject*> pstack;
 
@@ -141,8 +143,6 @@ bool parseInput(ParsingTable* table) {
 
 		Terminal *token = *inputToken;
 
-		//cout << symbol->toString() << " , " << token->toString() << endl;
-
 		//If the current symbol is a terminal match it and remove it and the input
 		if(symbol->isTerminal())
 		{
@@ -153,6 +153,7 @@ bool parseInput(ParsingTable* table) {
 			}
 			else
 			{
+				dump(pstack, token);
 				return false;
 			}
 		}
@@ -163,7 +164,13 @@ bool parseInput(ParsingTable* table) {
 
 			if(next == NULL)
 			{
-				return false;
+				if( ((NonTerminal*)symbol)->hasEmptySet) {
+					pstack.pop_back();
+					continue;
+				} else {
+					dump(pstack, token);
+					return false;
+				}
 			}
 			else
 			{
@@ -177,5 +184,17 @@ bool parseInput(ParsingTable* table) {
 		}
 	}
 
-	return pstack.size() > 0;
+	if(pstack.size() > 0) {
+		dump(pstack, *inputToken);
+		return false;
+	}
+
+	return true;
+}
+
+void dump(vector<GrammerObject*> stack,Terminal* token) {
+	cout << "Input: " << token->identifier << endl;
+	cout << "Stack:\n";
+	for(vector<GrammerObject*>::reverse_iterator i = stack.rbegin(); i != stack.rend(); i++)
+		cout << '\t' << (*i)->identifier << endl;
 }
