@@ -66,7 +66,13 @@ void readGrammer(istream *in) {
 void readInput(istream* in){
 	//Input data
 	string line;
-	getline(*in, line);
+
+	string buffer;
+	while(!in->eof()) {
+		getline(*in, buffer);
+		line += "\n" + buffer;
+	}
+
 	language = line;
 	//Convert the input into a character array
 	char* c = new char[line.size() +1];
@@ -91,6 +97,13 @@ void readInput(istream* in){
 		} else if(c[i] == 'e' && c[i+1] == 'n' && c[i+2] == 'd'){
 					i+=2;
 					out += "e";
+		} else if(c[i] == 'r' && c[i+1] == 'e' && c[i+2] == 'a' && c[i+3] == 'd'){
+					i+=3;
+					out += "r";
+		} else if(c[i] == 'p' && c[i+1] == 'r' && c[i+2] == 'i' 
+			&& c[i+3] == 'n' && c[i+4] == 't'){
+					i+=4;
+					out += "p";
 		} else if(isalpha(c[i]) || c[i] == '_'){
 			while(i < len && j<10 && (isalpha(c[i+1]) || (c[i+1] == '_' && (isalpha(c[i+2]) || isdigit(c[i+2]))) || isdigit(c[i+1]))){
 				i++;
@@ -144,6 +157,12 @@ void readInput(istream* in){
 			 input.push_back(findTerminal("BEGIN"));
 		 } else if (c[i] == 'e'){
 			 input.push_back(findTerminal("END"));
+		 } else if (c[i] == 'r'){
+			 input.push_back(findTerminal("READ"));
+		 } else if (c[i] == 'p'){
+			 input.push_back(findTerminal("PRINT"));
+		 } else if (c[i] == '\n' || c[i] == ' ' || c[i] == '\t'){
+			 //ignore whitespace
 		 } else { cout << "ERROR: " << c[i] << endl; }
 	}
 }
