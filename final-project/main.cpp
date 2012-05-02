@@ -44,7 +44,7 @@ int main(int argc, char* argv[]) {
 	readInput(&inputFile);
 	bool parsed = parseInput(&table);
 
-	cout << "Parsed Language: " << (parsed ? "Passed" : "Failed") << endl << endl;
+	cout << "Parsed Language: " << (parsed ? "Successful parse!" : "Failed") << endl << endl;
 
 	printLanguage();
 		

@@ -2,7 +2,7 @@
 #include <vector>
 #include <deque>
 
-#include "grammer.h"
+#include "grammar.h"
 #include "scanner.h"
 
 using namespace std;

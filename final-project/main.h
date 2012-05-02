@@ -1,7 +1,7 @@
 #include <iostream>
 #include <fstream>
 
-#include "grammer.h"
+#include "grammar.h"
 #include "scanner.h"
 #include "parsingTable.h"
 

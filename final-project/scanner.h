@@ -1,4 +1,4 @@
-#include "grammer.h"
+#include "grammar.h"
 
 void readInput(istream*);
 void readGrammer();
